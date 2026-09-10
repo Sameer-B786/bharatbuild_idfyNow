@@ -1,73 +1,25 @@
 "use client";
 
-import { useState } from 'react';
+import { signIn } from "next-auth/react";
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const [email, setEmail] = useState('prof.sharma@college.edu');
-  const [password, setPassword] = useState('password123');
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-
   const handleLogin = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    // Mock login delay
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push('/dashboard');
-    }, 1000);
+    signIn("cognito", { callbackUrl: "/dashboard" });
   };
 
   return (
-    <form className="space-y-6" onSubmit={handleLogin}>
+    <div className="space-y-6 flex flex-col justify-center text-center">
       <div>
-        <Label htmlFor="email">College Email Address</Label>
-        <div className="mt-2">
-          <Input 
-            id="email" 
-            name="email" 
-            type="email" 
-            autoComplete="email" 
-            required 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="prof.sharma@college.edu"
-          />
-        </div>
+        <h2 className="text-2xl font-bold">Welcome Back</h2>
+        <p className="text-gray-500 mt-2">Sign in using your college portal via AWS Cognito.</p>
       </div>
-
       <div>
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password">Password</Label>
-          <div className="text-sm">
-            <a href="#" className="font-medium text-orange-600 hover:text-orange-500">
-              Forgot your password?
-            </a>
-          </div>
-        </div>
-        <div className="mt-2">
-          <Input 
-            id="password" 
-            name="password" 
-            type="password" 
-            autoComplete="current-password" 
-            required 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div>
-        <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-5" disabled={isLoading}>
-          {isLoading ? "Signing in..." : "Sign in"}
+        <Button onClick={handleLogin} className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-5">
+          Sign in with Cognito
         </Button>
       </div>
-    </form>
+    </div>
   );
 }
