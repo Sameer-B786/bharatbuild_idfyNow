@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import Cognito from "next-auth/providers/cognito"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Cognito({
       clientId: process.env.COGNITO_CLIENT_ID,
@@ -10,6 +11,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   pages: {
-    signIn: '/login', // Keep the custom login page
+    signIn: '/login',
   },
 })
