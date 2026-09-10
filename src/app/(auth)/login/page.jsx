@@ -1,49 +1,94 @@
 ﻿"use client";
 
-import { Authenticator, View } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 
-const components = {
-  Header() {
-    return (
-      <View textAlign="center" padding="2rem 0 1rem 0">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900">IDfyNow</h2>
-        <p className="text-gray-500 mt-2">Sign in to your college portal</p>
-      </View>
-    );
-  },
-  Footer() {
-    return (
-      <View textAlign="center" padding="1rem">
-        <p className="text-sm text-gray-400">&copy; 2026 IDfyNow. All rights reserved.</p>
-      </View>
-    );
-  }
-};
-
 export default function Login() {
+  const [email, setEmail] = useState('prof.sharma@college.edu');
+  const [password, setPassword] = useState('password123');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      if (res.ok) {
+        router.push('/dashboard');
+        router.refresh();
+      } else {
+        const data = await res.json();
+        setError(data.error || 'Invalid credentials');
+      }
+    } catch (err) {
+      setError('An error occurred during login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
-        <Authenticator 
-          components={components}
-          hideSignUp={true}
-        >
-          {({ user }) => {
-            if (user) {
-              router.push('/dashboard');
-            }
-            return (
-              <div className="text-center p-8">
-                <h2 className="text-xl font-bold mt-4">Logging in...</h2>
-                <p className="text-gray-500">Redirecting to your dashboard.</p>
-              </div>
-            );
-          }}
-        </Authenticator>
+      <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">IDfyNow</h2>
+          <p className="text-gray-500 mt-2">Sign in to your college portal</p>
+        </div>
+        
+        <form className="space-y-6" onSubmit={handleLogin}>
+          {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">{error}</div>}
+          
+          <div>
+            <Label htmlFor="email">College Email Address</Label>
+            <div className="mt-2">
+              <Input 
+                id="email" 
+                name="email" 
+                type="email" 
+                autoComplete="email" 
+                required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Password</Label>
+              <a href="#" className="text-sm font-medium text-orange-600 hover:text-orange-500">
+                Forgot password?
+              </a>
+            </div>
+            <div className="mt-2">
+              <Input 
+                id="password" 
+                name="password" 
+                type="password" 
+                autoComplete="current-password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-5" disabled={isLoading}>
+            {isLoading ? "Signing in..." : "Sign in"}
+          </Button>
+        </form>
       </div>
     </div>
   );
