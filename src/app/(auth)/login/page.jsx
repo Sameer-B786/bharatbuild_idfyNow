@@ -1,8 +1,7 @@
-"use client";
+ï»¿"use client";
 
-import { Authenticator, ThemeProvider, View, Image, Text, useTheme } from '@aws-amplify/ui-react';
+import { Authenticator, View } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const components = {
@@ -17,7 +16,7 @@ const components = {
   Footer() {
     return (
       <View textAlign="center" padding="1rem">
-        <p className="text-sm text-gray-400">© 2026 IDfyNow. All rights reserved.</p>
+        <p className="text-sm text-gray-400">&copy; 2026 IDfyNow. All rights reserved.</p>
       </View>
     );
   }
