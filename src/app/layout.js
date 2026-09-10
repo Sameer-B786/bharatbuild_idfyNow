@@ -1,5 +1,6 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import AmplifyConfig from "@/components/AmplifyConfig";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -18,7 +19,11 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${poppins.variable} antialiased`}
     >
-      <body className="font-sans antialiased bg-gray-50 text-gray-900">{children}</body>
+      <body className="font-sans antialiased bg-gray-50 text-gray-900">
+        <AmplifyConfig>
+          {children}
+        </AmplifyConfig>
+      </body>
     </html>
   );
 }
