@@ -127,4 +127,17 @@
   html {
     @apply font-sans;
   }
+}[data-amplify-authenticator] {
+  --amplify-colors-brand-primary-10: #ffedd5;
+  --amplify-colors-brand-primary-20: #fed7aa;
+  --amplify-colors-brand-primary-40: #fb923c;
+  --amplify-colors-brand-primary-60: #f97316;
+  --amplify-colors-brand-primary-80: #ea580c; /* orange-600 */
+  --amplify-colors-brand-primary-90: #c2410c; /* orange-700 */
+  --amplify-colors-brand-primary-100: #9a3412; /* orange-800 */
+  --amplify-components-button-primary-background-color: var(--amplify-colors-brand-primary-80);
+  --amplify-components-button-primary-hover-background-color: var(--amplify-colors-brand-primary-90);
+  --amplify-components-button-primary-focus-background-color: var(--amplify-colors-brand-primary-90);
+  --amplify-components-button-primary-active-background-color: var(--amplify-colors-brand-primary-100);
+  --amplify-components-button-border-radius: 0.75rem; /* rounded-xl */
 }
