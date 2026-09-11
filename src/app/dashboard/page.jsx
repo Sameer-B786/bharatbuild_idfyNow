@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SectionCard } from "@/components/sections/SectionCard";
-import { Users, LayoutGrid, Calendar, Percent, Code2, Bell, Cpu, FileText, Plus, ScanLine, FilePlus, Settings, MoreVertical, ArrowRight } from "lucide-react";
+import { Users, LayoutGrid, Calendar, Code2, Bell, Cpu, FileText, Plus, ScanLine, FilePlus, Settings, MoreVertical, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -41,11 +41,10 @@ export default async function Dashboard() {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatCard title="Total Sections" value="5" trend="up" trendValue="+1 this month" icon={LayoutGrid} />
         <StatCard title="Total Students" value="238" trend="up" trendValue="+12 this month" icon={Users} />
         <StatCard title="Attendance Sessions" value="42" trend="up" trendValue="+8 this month" icon={Calendar} />
-        <StatCard title="Today's Attendance" value="91%" trend="up" trendValue="+5% from yesterday" icon={Percent} />
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
