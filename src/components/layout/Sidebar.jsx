@@ -1,9 +1,11 @@
+"use client";
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, PlusSquare, LayoutGrid, ScanLine, Clock, User, LogOut, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export function Sidebar() {
+export function Sidebar({ userName = "Prof. Sharma" }) {
   const pathname = usePathname();
 
   const navigation = [
@@ -15,6 +17,11 @@ export function Sidebar() {
     { name: 'Attendance History', href: '/dashboard/attendance/history', icon: Clock },
     { name: 'Profile', href: '/dashboard/profile', icon: User },
   ];
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    window.location.href = '/login';
+  };
 
   return (
     <div className="hidden md:flex flex-col w-64 bg-white border-r min-h-screen">
@@ -52,14 +59,14 @@ export function Sidebar() {
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl mb-2">
           <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/placeholder-user.jpg" alt="Prof. Sharma" className="h-full w-full object-cover" />
+            <img src="/placeholder-user.jpg" alt={userName} className="h-full w-full object-cover" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">Prof. Sharma</p>
+            <p className="text-sm font-medium text-gray-900 truncate capitalize">{userName}</p>
             <p className="text-xs text-gray-500 truncate">Faculty</p>
           </div>
         </div>
-        <button className="flex w-full items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+        <button onClick={handleLogout} className="flex w-full items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
           <LogOut className="mr-3 h-5 w-5 text-gray-400" />
           Logout
         </button>

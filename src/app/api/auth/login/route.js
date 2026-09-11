@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { CognitoIdentityProviderClient, InitiateAuthCommand } from '@aws-sdk/client-cognito-identity-provider';
 import crypto from 'crypto';
 import { createSession } from '@/lib/session';
+import { decodeJwt } from 'jose';
 
 const CLIENT_ID = '2hmfg0env9k3v9ue94b9fsbjmc';
 const CLIENT_SECRET = '15fav35q8tnflbeckaovkst8j1d9gi5lhugkerr5j2v7lpog1im9';
@@ -38,11 +39,17 @@ export async function POST(request) {
     const response = await client.send(command);
 
     if (response.AuthenticationResult) {
+      // Decode ID token to get the user's name
+      const idToken = response.AuthenticationResult.IdToken;
+      const decodedIdToken = decodeJwt(idToken);
+      const name = decodedIdToken.name || email.split('@')[0]; // fallback to email prefix if name is missing
+
       // Create session with tokens and user info
       await createSession({
         email,
+        name,
         accessToken: response.AuthenticationResult.AccessToken,
-        idToken: response.AuthenticationResult.IdToken,
+        idToken,
       });
 
       return NextResponse.json({ success: true });

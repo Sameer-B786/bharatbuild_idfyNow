@@ -1,9 +1,11 @@
+"use client";
+
 import { Search, Menu } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { Sidebar } from './Sidebar';
 
-export function Topbar() {
+export function Topbar({ userName = "Prof. Sharma" }) {
   return (
     <header className="flex h-16 items-center justify-between px-4 md:px-8 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
       <div className="flex items-center gap-4 flex-1">
@@ -14,7 +16,7 @@ export function Topbar() {
           <SheetContent side="left" className="p-0 w-64">
             <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
             <div className="flex w-full h-full">
-              <Sidebar className="w-full flex md:flex border-r-0" />
+              <Sidebar userName={userName} className="w-full flex md:flex border-r-0" />
             </div>
           </SheetContent>
         </Sheet>
@@ -33,10 +35,10 @@ export function Topbar() {
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-full bg-gray-200 overflow-hidden shrink-0">
              {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img src="/placeholder-user.jpg" alt="Prof. Sharma" className="h-full w-full object-cover" />
+             <img src="/placeholder-user.jpg" alt={userName} className="h-full w-full object-cover" />
           </div>
           <div className="hidden md:block text-sm">
-            <p className="font-medium text-gray-900 leading-none">Prof. Sharma</p>
+            <p className="font-medium text-gray-900 leading-none capitalize">{userName}</p>
             <p className="text-xs text-gray-500 mt-1">Faculty</p>
           </div>
         </div>
