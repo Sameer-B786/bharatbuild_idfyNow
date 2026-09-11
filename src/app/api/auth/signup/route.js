@@ -15,10 +15,10 @@ function calculateSecretHash(username) {
 
 export async function POST(request) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, name } = await request.json();
 
-    if (!email || !password) {
-      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+    if (!email || !password || !name) {
+      return NextResponse.json({ error: 'Name, email and password are required' }, { status: 400 });
     }
 
     const client = new CognitoIdentityProviderClient({ region: REGION });
@@ -34,6 +34,14 @@ export async function POST(request) {
           Name: 'email',
           Value: email,
         },
+        {
+          Name: 'name',
+          Value: name,
+        },
+        {
+          Name: 'name.formatted',
+          Value: name,
+        }
       ],
     });
 

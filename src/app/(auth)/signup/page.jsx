@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function SignUp() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +25,7 @@ export default function SignUp() {
       const signupRes = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
       
       const signupData = await signupRes.json();
@@ -68,6 +69,22 @@ export default function SignUp() {
         <form className="space-y-6" onSubmit={handleSignUp}>
           {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">{error}</div>}
           
+          <div>
+            <Label htmlFor="name">Full Name</Label>
+            <div className="mt-2">
+              <Input 
+                id="name" 
+                name="name" 
+                type="text" 
+                autoComplete="name" 
+                required 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+              />
+            </div>
+          </div>
+
           <div>
             <Label htmlFor="email">Email Address</Label>
             <div className="mt-2">
