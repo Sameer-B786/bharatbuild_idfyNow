@@ -14,7 +14,6 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
     { name: 'Create Section', href: '/dashboard/sections/create', icon: PlusSquare },
     { name: 'Manage Sections', href: '/dashboard/sections', icon: LayoutGrid },
     { name: 'Take Attendance', href: '/dashboard/attendance', icon: ScanLine },
-    { name: 'Attendance History', href: '/dashboard/attendance/history', icon: Clock },
   ];
 
   const handleLogout = async () => {
