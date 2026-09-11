@@ -54,11 +54,13 @@ export async function POST(request) {
     console.error('Login error:', error);
     
     // Customize error messages based on Cognito exceptions
-    let message = 'An error occurred during login';
+    let message = 'An error occurred during login: ' + error.message;
     if (error.name === 'NotAuthorizedException') {
       message = 'Incorrect email or password';
     } else if (error.name === 'UserNotFoundException') {
       message = 'User does not exist';
+    } else if (error.name === 'UserNotConfirmedException') {
+      message = 'Please confirm your email address before logging in';
     }
 
     return NextResponse.json({ error: message }, { status: 401 });
