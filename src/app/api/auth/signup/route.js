@@ -37,10 +37,6 @@ export async function POST(request) {
         {
           Name: 'name',
           Value: name,
-        },
-        {
-          Name: 'name.formatted',
-          Value: name,
         }
       ],
     });
