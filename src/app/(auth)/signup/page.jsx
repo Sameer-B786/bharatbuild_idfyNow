@@ -34,21 +34,23 @@ export default function SignUp() {
         throw new Error(signupData.error || 'Sign up failed');
       }
 
-      // 2. Automatically try to log them in to redirect to dashboard
-      const loginRes = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      if (signupData.userConfirmed) {
+        // Automatically try to log them in to redirect to dashboard
+        const loginRes = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
 
-      if (loginRes.ok) {
-        // Successfully logged in
-        router.push('/dashboard');
-        router.refresh();
+        if (loginRes.ok) {
+          router.push('/dashboard');
+          router.refresh();
+        } else {
+          router.push('/login?message=signup_success_please_login');
+        }
       } else {
-        // If login failed (e.g., because email confirmation is required by Cognito)
-        // we'll just send them to the login page where they can try later or see the error
-        router.push('/login?message=signup_success_please_login');
+        // User needs to confirm email via OTP
+        router.push(`/verify?email=${encodeURIComponent(email)}`);
       }
       
     } catch (err) {

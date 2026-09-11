@@ -4,7 +4,7 @@ import { decrypt } from '@/lib/session';
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
   const isProtectedRoute = path.startsWith('/dashboard');
-  const isPublicRoute = path === '/login' || path === '/signup' || path === '/forgot-password';
+  const isPublicRoute = path === '/login' || path === '/signup' || path === '/forgot-password' || path === '/verify';
 
   const cookie = request.cookies.get('session')?.value;
   const session = await decrypt(cookie);
