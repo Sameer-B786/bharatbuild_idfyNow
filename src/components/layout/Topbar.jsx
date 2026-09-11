@@ -33,10 +33,6 @@ export function Topbar({ userName = "Prof. Sharma" }) {
       
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-full bg-gray-200 overflow-hidden shrink-0">
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img src="/placeholder-user.jpg" alt={userName} className="h-full w-full object-cover" />
-          </div>
           <div className="hidden md:block text-sm">
             <p className="font-medium text-gray-900 leading-none capitalize">{userName}</p>
             <p className="text-xs text-gray-500 mt-1">Faculty</p>

@@ -15,7 +15,6 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
     { name: 'Manage Sections', href: '/dashboard/sections', icon: LayoutGrid },
     { name: 'Take Attendance', href: '/dashboard/attendance', icon: ScanLine },
     { name: 'Attendance History', href: '/dashboard/attendance/history', icon: Clock },
-    { name: 'Profile', href: '/dashboard/profile', icon: User },
   ];
 
   const handleLogout = async () => {
@@ -57,10 +56,6 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
           <p className="text-xs text-gray-400">for a Brighter Tomorrow</p>
         </div>
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl mb-2">
-          <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/placeholder-user.jpg" alt={userName} className="h-full w-full object-cover" />
-          </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900 truncate capitalize">{userName}</p>
             <p className="text-xs text-gray-500 truncate">Faculty</p>
