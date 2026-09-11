@@ -12,6 +12,8 @@ import Link from "next/link";
 
 import { getSession } from "@/lib/session";
 
+import { Greeting } from "@/components/dashboard/Greeting";
+
 export default async function Dashboard() {
   const session = await getSession();
   const userName = session?.userInfo?.name || session?.userInfo?.email?.split('@')[0] || "User";
@@ -21,7 +23,7 @@ export default async function Dashboard() {
       {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-3xl p-8 flex justify-between items-center relative overflow-hidden border border-orange-100">
         <div className="relative z-10">
-          <h2 className="text-2xl font-bold text-gray-900">Good Morning,</h2>
+          <Greeting />
           <h1 className="text-4xl font-extrabold text-orange-600 mt-1 capitalize">{userName}</h1>
           <p className="text-gray-600 mt-3 max-w-md">
             Manage your classes, take attendance and keep track of your students — all in one place.
