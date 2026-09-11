@@ -19,12 +19,39 @@ export default function SignUp() {
     setIsLoading(true);
     setError('');
     
-    // Simulate signup request
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      router.push('/login');
+      // 1. Sign up the user
+      const signupRes = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      const signupData = await signupRes.json();
+      
+      if (!signupRes.ok) {
+        throw new Error(signupData.error || 'Sign up failed');
+      }
+
+      // 2. Automatically try to log them in to redirect to dashboard
+      const loginRes = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (loginRes.ok) {
+        // Successfully logged in
+        router.push('/dashboard');
+        router.refresh();
+      } else {
+        // If login failed (e.g., because email confirmation is required by Cognito)
+        // we'll just send them to the login page where they can try later or see the error
+        router.push('/login?message=signup_success_please_login');
+      }
+      
     } catch (err) {
-      setError('An error occurred during sign up');
+      setError(err.message || 'An error occurred during sign up');
     } finally {
       setIsLoading(false);
     }
