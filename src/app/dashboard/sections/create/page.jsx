@@ -105,6 +105,12 @@ export default function CreateSection() {
               <input type="file" className="hidden" accept=".xlsx, .xls" onChange={handleFileUpload} />
             </label>
           </div>
+
+          <div className="mt-8 flex justify-end">
+            <Button onClick={handleCreate} className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white px-8">
+              Save Section
+            </Button>
+          </div>
         </div>
       )}
 
