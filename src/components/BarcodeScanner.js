@@ -26,8 +26,8 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
         },
         numOfWorkers: typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 4 : 4,
         decoder: {
-          // Changed to strictly Code 39 as requested.
-          readers: ["code_39_reader"],
+          // Reverted strictly to Code 128
+          readers: ["code_128_reader"],
           multiple: false
         },
         locate: true, // Helps Quagga find the barcode in the image
