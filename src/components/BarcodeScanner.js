@@ -9,8 +9,16 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
       "reader",
       {
         fps: 10,
-        qrbox: { width: 250, height: 150 },
-        // Will support standard student ID barcodes like Code39, Code128, and QR
+        // We removed 'qrbox' so the entire camera feed acts as a scanner.
+        // This is much better for wide 1D barcodes found on ID cards.
+        videoConstraints: {
+          facingMode: "environment", // Use the back camera on mobile
+          width: { ideal: 1280 },    // Higher resolution to detect thin barcode lines
+          height: { ideal: 720 }
+        },
+        experimentalFeatures: {
+          useBarCodeDetectorIfSupported: true // Uses fast native browser decoding if available
+        }
       },
       /* verbose= */ false
     );
