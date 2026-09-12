@@ -8,10 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import BarcodeScanner from "@/components/BarcodeScanner";
 
 export default function AttendancePage() {
   const [sessionState, setSessionState] = useState("IDLE"); // IDLE, SCANNING, SUBMITTING, SUBMITTED
   const [selectedSection, setSelectedSection] = useState("");
+  const [isCameraActive, setIsCameraActive] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   
   // Mock data
@@ -39,12 +41,11 @@ export default function AttendancePage() {
     setSessionState("SCANNING");
   };
 
-  const handleScan = (e) => {
-    e.preventDefault();
-    if (!barcodeInput) return;
+  const processScan = (idToScan) => {
+    if (!idToScan) return;
     
     // Simulate finding a student
-    const studentIndex = students.findIndex(s => s.id === barcodeInput || s.id === barcodeInput.replace('STU', ''));
+    const studentIndex = students.findIndex(s => s.id === idToScan || s.id === idToScan.replace('STU', ''));
     
     if (studentIndex >= 0) {
       const student = students[studentIndex];
@@ -58,9 +59,13 @@ export default function AttendancePage() {
         setRecentScans([{ ...student, status: "DUPLICATE", time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }, ...recentScans].slice(0, 5));
       }
     } else {
-       setRecentScans([{ id: barcodeInput, name: "Unknown", status: "INVALID", time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }, ...recentScans].slice(0, 5));
+       setRecentScans([{ id: idToScan, name: "Unknown", status: "INVALID", time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }, ...recentScans].slice(0, 5));
     }
-    
+  };
+
+  const handleScan = (e) => {
+    e.preventDefault();
+    processScan(barcodeInput);
     setBarcodeInput("");
   };
 
@@ -199,15 +204,41 @@ export default function AttendancePage() {
           <div className="bg-white rounded-2xl border shadow-sm p-6 text-center">
             <h3 className="font-bold text-gray-900 mb-4">Barcode Scanner</h3>
             <div className="aspect-video bg-black rounded-xl overflow-hidden relative mb-4 flex items-center justify-center">
-               {/* Mock Scanner Feed */}
-               <div className="absolute inset-0 border-2 border-orange-500/50 m-8 rounded-lg">
-                  <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-orange-500" />
-                  <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-orange-500" />
-                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-orange-500" />
-                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-orange-500" />
-                  <div className="w-full h-0.5 bg-orange-500/80 absolute top-1/2 -translate-y-1/2 shadow-[0_0_8px_2px_rgba(249,115,22,0.5)] animate-pulse" />
-               </div>
-               <p className="text-white/50 text-sm">Camera Feed Active</p>
+               {isCameraActive ? (
+                  <div className="absolute inset-0 bg-white">
+                    <BarcodeScanner 
+                      onScanSuccess={(decodedText, result, scanner) => {
+                         processScan(decodedText);
+                         // Wait 2 seconds before resuming scan
+                         setTimeout(() => scanner.resume(), 2000);
+                      }} 
+                      onScanError={() => {}} 
+                    />
+                    <Button 
+                      onClick={() => setIsCameraActive(false)} 
+                      variant="destructive"
+                      className="absolute bottom-4 right-4 z-10"
+                    >
+                      Stop Camera
+                    </Button>
+                  </div>
+               ) : (
+                  <>
+                     <div className="absolute inset-0 border-2 border-orange-500/50 m-8 rounded-lg">
+                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-orange-500" />
+                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-orange-500" />
+                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-orange-500" />
+                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-orange-500" />
+                        <div className="w-full h-0.5 bg-orange-500/80 absolute top-1/2 -translate-y-1/2 shadow-[0_0_8px_2px_rgba(249,115,22,0.5)] animate-pulse" />
+                     </div>
+                     <Button 
+                       onClick={() => setIsCameraActive(true)}
+                       className="z-10 bg-orange-500 hover:bg-orange-600 text-white"
+                     >
+                       Turn On Camera
+                     </Button>
+                  </>
+               )}
             </div>
             
             <form onSubmit={handleScan} className="flex gap-2">
