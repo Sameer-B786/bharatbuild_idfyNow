@@ -13,6 +13,7 @@ export default function CreateSection() {
   const [formData, setFormData] = useState({
     className: "",
     sectionName: "",
+    subject: "",
     semester: "",
     academicYear: ""
   });
@@ -69,6 +70,12 @@ export default function CreateSection() {
               <Label htmlFor="sectionName">Section Name</Label>
               <Input id="sectionName" placeholder="e.g. A" 
                 value={formData.sectionName} onChange={e => setFormData({...formData, sectionName: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="subject">Subject</Label>
+              <Input id="subject" placeholder="e.g. Mathematics" 
+                value={formData.subject} onChange={e => setFormData({...formData, subject: e.target.value})}
               />
             </div>
             <div className="space-y-2">
@@ -166,7 +173,7 @@ export default function CreateSection() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Section Created Successfully!</h2>
           <p className="text-gray-500 mb-8 max-w-md">
-            The section {formData.className} {formData.sectionName} has been created with {previewData.length} students.
+            The section {formData.className} {formData.sectionName} for {formData.subject || "the selected subject"} has been created with {previewData.length} students.
           </p>
           <div className="flex gap-4">
             <Button variant="outline" asChild className="rounded-xl">
