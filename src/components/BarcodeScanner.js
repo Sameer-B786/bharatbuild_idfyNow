@@ -20,9 +20,16 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
             facingMode: "environment", // Force back camera
           },
         },
+        locator: {
+          patchSize: "medium", // Optimizes search grid for standard barcodes
+          halfSample: true,
+        },
+        numOfWorkers: typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 4 : 4,
         decoder: {
-          // Standard student ID formats
-          readers: ["code_128_reader", "code_39_reader", "ean_reader", "upc_reader"],
+          // Strictly restricted to Code 128 as requested. 
+          // Removing the other readers drastically improves speed and accuracy.
+          readers: ["code_128_reader"],
+          multiple: false
         },
         locate: true, // Helps Quagga find the barcode in the image
       },
