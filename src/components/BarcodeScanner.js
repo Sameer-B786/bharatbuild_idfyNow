@@ -13,24 +13,32 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
         inputStream: {
           name: "Live",
           type: "LiveStream",
-          target: scannerRef.current, // Render the video inside our div
+          target: scannerRef.current,
           constraints: {
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
-            facingMode: "environment", // Force back camera
+            // Request the highest possible resolution up to 1080p
+            width: { min: 640, ideal: 1280, max: 1920 },
+            height: { min: 480, ideal: 720, max: 1080 },
+            facingMode: "environment",
+          },
+          // MASSIVE SPEED BOOST: Only scan the middle horizontal strip of the camera feed.
+          // This stops Quagga from wasting CPU on the background.
+          area: {
+            top: "25%",
+            right: "10%",
+            left: "10%",
+            bottom: "25%",
           },
         },
         locator: {
-          patchSize: "medium", // Optimizes search grid for standard barcodes
-          halfSample: true,
+          patchSize: "large", // Better for physical ID cards
+          halfSample: false,  // CRITICAL: Do not compress the image, we need all the thin barcode lines intact
         },
         numOfWorkers: typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 4 : 4,
         decoder: {
-          // Reverted strictly to Code 128
           readers: ["code_128_reader"],
           multiple: false
         },
-        locate: true, // Helps Quagga find the barcode in the image
+        locate: true,
       },
       (err) => {
         if (err) {
@@ -69,10 +77,7 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
     Quagga.onDetected((result) => {
       if (result && result.codeResult && result.codeResult.code) {
         const code = result.codeResult.code;
-        // Pause scanning so it doesn't read the same card 20 times in a row
         Quagga.stop();
-        
-        // Pass a mock scanner object with a resume function so your AttendanceScanner works exactly the same
         onScanSuccess(code, result, { resume: () => Quagga.start() });
       }
     });
@@ -89,12 +94,18 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
       id="interactive" 
       className="viewport" 
       ref={scannerRef} 
-      style={{ width: "100%", maxWidth: "600px", margin: "0 auto", position: "relative", overflow: "hidden" }}
+      style={{ width: "100%", maxWidth: "600px", margin: "0 auto", position: "relative", overflow: "hidden", backgroundColor: "black", borderRadius: "0.5rem" }}
     >
-      {/* Inject CSS so Quagga's injected video and canvas overlap correctly */}
+      {/* Targeting Box UI to show exactly where Quagga is scanning */}
+      <div style={{ 
+        position: 'absolute', top: '25%', bottom: '25%', left: '10%', right: '10%', 
+        border: '3px solid rgba(255, 0, 0, 0.6)', borderRadius: '8px', zIndex: 10, pointerEvents: 'none',
+        boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5)' // Darkens everything outside the scan area
+      }}></div>
+
       <style dangerouslySetInnerHTML={{__html: `
-        #interactive video { width: 100%; height: auto; border-radius: 0.5rem; }
-        #interactive canvas.drawingBuffer { position: absolute; top: 0; left: 0; width: 100%; height: auto; }
+        #interactive video { width: 100%; height: auto; border-radius: 0.5rem; display: block; }
+        #interactive canvas.drawingBuffer { position: absolute; top: 0; left: 0; width: 100%; height: auto; z-index: 5; }
       `}} />
     </div>
   );
