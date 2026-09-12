@@ -1,46 +1,72 @@
 "use client";
-import React, { useEffect } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import React, { useEffect, useRef } from "react";
+import Quagga from "quagga";
 
 const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
-  useEffect(() => {
-    // Initialize the scanner targeting the div with id "reader"
-    const scanner = new Html5QrcodeScanner(
-      "reader",
-      {
-        fps: 10,
-        // We removed 'qrbox' so the entire camera feed acts as a scanner.
-        // This is much better for wide 1D barcodes found on ID cards.
-        videoConstraints: {
-          facingMode: "environment", // Use the back camera on mobile
-          width: { ideal: 1280 },    // Higher resolution to detect thin barcode lines
-          height: { ideal: 720 }
-        },
-        experimentalFeatures: {
-          useBarCodeDetectorIfSupported: true // Uses fast native browser decoding if available
-        }
-      },
-      /* verbose= */ false
-    );
+  const scannerRef = useRef(null);
 
-    scanner.render(
-      (decodedText, decodedResult) => {
-        // Pause scanning immediately when a barcode is found so we don't spam the API
-        scanner.pause(true);
-        onScanSuccess(decodedText, decodedResult, scanner);
+  useEffect(() => {
+    if (!scannerRef.current) return;
+
+    Quagga.init(
+      {
+        inputStream: {
+          name: "Live",
+          type: "LiveStream",
+          target: scannerRef.current, // Render the video inside our div
+          constraints: {
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            facingMode: "environment", // Force back camera
+          },
+        },
+        decoder: {
+          // Standard student ID formats
+          readers: ["code_128_reader", "code_39_reader", "ean_reader", "upc_reader"],
+        },
+        locate: true, // Helps Quagga find the barcode in the image
       },
-      (errorMessage) => {
-        if (onScanError) onScanError(errorMessage);
+      (err) => {
+        if (err) {
+          console.error("Quagga initialization failed:", err);
+          if (onScanError) onScanError(err);
+          return;
+        }
+        Quagga.start();
       }
     );
 
-    // Cleanup camera and UI on unmount
+    Quagga.onDetected((result) => {
+      if (result && result.codeResult && result.codeResult.code) {
+        const code = result.codeResult.code;
+        // Pause scanning so it doesn't read the same card 20 times in a row
+        Quagga.stop();
+        
+        // Pass a mock scanner object with a resume function so your AttendanceScanner works exactly the same
+        onScanSuccess(code, result, { resume: () => Quagga.start() });
+      }
+    });
+
     return () => {
-      scanner.clear().catch(console.error);
+      Quagga.stop();
+      Quagga.offDetected();
     };
   }, [onScanSuccess, onScanError]);
 
-  return <div id="reader" style={{ width: "100%", maxWidth: "500px", margin: "0 auto" }}></div>;
+  return (
+    <div 
+      id="interactive" 
+      className="viewport" 
+      ref={scannerRef} 
+      style={{ width: "100%", maxWidth: "600px", margin: "0 auto", position: "relative", overflow: "hidden" }}
+    >
+      {/* Inject CSS so Quagga's injected video and canvas overlap correctly */}
+      <style dangerouslySetInnerHTML={{__html: `
+        #interactive video { width: 100%; height: auto; border-radius: 0.5rem; }
+        #interactive canvas.drawingBuffer { position: absolute; top: 0; left: 0; width: 100%; height: auto; }
+      `}} />
+    </div>
+  );
 };
 
 export default BarcodeScanner;
