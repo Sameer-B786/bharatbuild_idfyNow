@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import { Html5Qrcode } from "html5-qrcode";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 
 const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
   const isPausedRef = useRef(false);
@@ -10,14 +10,23 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
     let active = true;
 
     const startScanner = async () => {
-      html5QrCode = new Html5Qrcode("reader");
+      // Limit to only specific formats for MASSIVE speed boost
+      const formatsToSupport = [
+        Html5QrcodeSupportedFormats.CODE_128,
+        Html5QrcodeSupportedFormats.CODE_39,
+        Html5QrcodeSupportedFormats.EAN_13,
+      ];
+
+      html5QrCode = new Html5Qrcode("reader", { formatsToSupport });
+      
       try {
         await html5QrCode.start(
           { facingMode: "environment" },
           {
-            fps: 10,
-            qrbox: { width: 350, height: 150 }, // Rectangular box is better for 1D barcodes
+            fps: 30, // Increased frame rate
+            qrbox: { width: 400, height: 100 }, // Narrow rectangular scan box limits pixel parsing area
             aspectRatio: 1.777778, // 16:9
+            disableFlip: true, // Don't try scanning mirrored images (saves CPU)
           },
           (decodedText, decodedResult) => {
             if (active && !isPausedRef.current) {
@@ -61,6 +70,16 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
         id="reader" 
         style={{ width: "100%", margin: "0 auto", overflow: "hidden", borderRadius: "0.5rem" }}
       ></div>
+      {/* UI Overlay to show the scan area clearly */}
+      <div style={{ 
+        position: 'absolute', top: '50%', left: '50%', 
+        transform: 'translate(-50%, -50%)',
+        width: '400px', height: '100px',
+        maxWidth: '90%',
+        border: '3px solid rgba(0, 255, 0, 0.6)', 
+        borderRadius: '8px', zIndex: 10, pointerEvents: 'none',
+        boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5)'
+      }}></div>
     </div>
   );
 };
