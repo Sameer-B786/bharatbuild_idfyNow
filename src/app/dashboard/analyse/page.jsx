@@ -18,11 +18,14 @@ export default function AnalysePage() {
     setResults(null);
     
     try {
-      const url = new URL("http://localhost:5678/webhook-test/6fc1aaba-eee0-4b6d-b185-c959648cfad8");
-      url.searchParams.append("query", query);
+      const url = "http://localhost:5678/webhook-test/6fc1aaba-eee0-4b6d-b185-c959648cfad8";
       
-      const response = await fetch(url.toString(), {
-        method: "GET",
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ query: query })
       });
       
       let data;
