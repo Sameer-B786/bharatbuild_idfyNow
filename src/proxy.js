@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { decrypt } from '@/lib/session';
 
-export async function middleware(request) {
+export async function proxy(request) {
   const path = request.nextUrl.pathname;
   const isProtectedRoute = path.startsWith('/dashboard');
   const isPublicRoute = path === '/login' || path === '/signup' || path === '/forgot-password' || path === '/verify';
