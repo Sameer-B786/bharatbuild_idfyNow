@@ -13,15 +13,15 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
     const initScanner = async () => {
       try {
         const BarkoderSDK = await import('barkoder-wasm');
-        console.log("BarkoderSDK imported:", BarkoderSDK);
         
         let initFn = BarkoderSDK.initialize || (BarkoderSDK.default && BarkoderSDK.default.initialize);
         if (!initFn) {
             throw new Error("Could not find initialize function on imported module.");
         }
 
-        // Pass empty string as license key.
-        const barkoder = await initFn("", { wasmPath: '/' });
+        // Pass a dummy string so it doesn't throw empty string errors. 
+        // Barkoder will run in evaluation mode (with asterisks).
+        const barkoder = await initFn("your_license_key_here");
         
         if (!active) {
             barkoder.stopScanner();
@@ -67,7 +67,7 @@ const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
 
   return (
     <div style={{ position: "relative", width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-      {isInitializing && <div style={{ color: "white", textAlign: "center", padding: "20px" }}>Initializing Scanner...</div>}
+      {isInitializing && <div style={{ color: "black", textAlign: "center", padding: "20px" }}>Initializing Scanner...</div>}
       {errorMsg && <div style={{ color: "red", textAlign: "center", padding: "20px" }}>Error: {errorMsg}</div>}
       <div 
         id="barkoder-container" 
