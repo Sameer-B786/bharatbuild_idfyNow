@@ -10,46 +10,60 @@ export default function AnalysePage() {
   const [isAnalysing, setIsAnalysing] = useState(false);
   const [results, setResults] = useState(null);
 
-  const handleAnalyse = (e) => {
+  const handleAnalyse = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
     
     setIsAnalysing(true);
     setResults(null);
     
-    // Simulate AI processing delay
-    setTimeout(() => {
+    try {
+      const url = new URL("http://localhost:5678/webhook-test/6fc1aaba-eee0-4b6d-b185-c959648cfad8");
+      url.searchParams.append("query", query);
+      
+      const response = await fetch(url.toString(), {
+        method: "GET",
+      });
+      
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonErr) {
+        data = { message: "Automation triggered successfully, but response was not JSON." };
+      }
+      
+      setIsAnalysing(false);
+      setResults({
+        query: query,
+        // If the webhook returns an array of insights matching the expected format, we use it.
+        // Otherwise, we just display the raw data in a single generic insight card.
+        insights: data.insights || [
+          {
+            title: "Automation Triggered",
+            description: typeof data === 'object' ? JSON.stringify(data, null, 2) : String(data),
+            icon: BarChart3,
+            color: "text-blue-500",
+            bg: "bg-blue-50",
+            border: "border-blue-100"
+          }
+        ]
+      });
+    } catch (error) {
       setIsAnalysing(false);
       setResults({
         query: query,
         insights: [
           {
-            title: "Critical Attendance Alert",
-            description: "12 students across all sections are currently below the 75% threshold.",
+            title: "Webhook Connection Failed",
+            description: error.message,
             icon: AlertTriangle,
             color: "text-rose-500",
             bg: "bg-rose-50",
             border: "border-rose-100"
-          },
-          {
-            title: "Overall Trend",
-            description: "Overall attendance has dropped by 4% compared to last month. The sharpest drop is in B.E ME - A.",
-            icon: TrendingDown,
-            color: "text-amber-500",
-            bg: "bg-amber-50",
-            border: "border-amber-100"
-          },
-          {
-            title: "Best Performing Section",
-            description: "B.E CSE - A maintains the highest average attendance at 93%.",
-            icon: Users,
-            color: "text-emerald-500",
-            bg: "bg-emerald-50",
-            border: "border-emerald-100"
           }
         ]
       });
-    }, 2000);
+    }
   };
 
   const sampleQueries = [
@@ -116,7 +130,7 @@ export default function AnalysePage() {
            </div>
            <h3 className="text-xl font-bold text-gray-900 mb-2">Crunching the numbers...</h3>
            <p className="text-gray-500 max-w-sm">
-             Our AI is querying your attendance records, identifying patterns, and generating insights.
+             Triggering your automation workflow and waiting for the response...
            </p>
         </div>
       )}
@@ -134,17 +148,25 @@ export default function AnalysePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {results.insights.map((insight, idx) => (
-              <div key={idx} className={`p-6 rounded-2xl border ${insight.bg} ${insight.border}`}>
-                <div className={`w-10 h-10 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm ${insight.color}`}>
-                  <insight.icon className="w-5 h-5" />
+            {results.insights.map((insight, idx) => {
+              // Handle case where we don't know the exact icon/style from the webhook
+              const IconComp = insight.icon || BarChart3;
+              const color = insight.color || "text-blue-500";
+              const bg = insight.bg || "bg-blue-50";
+              const border = insight.border || "border-blue-100";
+              
+              return (
+                <div key={idx} className={p-6 rounded-2xl border  }>
+                  <div className={w-10 h-10 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm }>
+                    <IconComp className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 mb-2">{insight.title}</h4>
+                  <p className="text-sm text-gray-600 leading-relaxed overflow-auto">
+                    {insight.description}
+                  </p>
                 </div>
-                <h4 className="font-bold text-gray-900 mb-2">{insight.title}</h4>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  {insight.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mt-8 pt-6 border-t flex justify-end">
