@@ -1,80 +1,66 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import { Html5Qrcode } from "html5-qrcode";
 
 const BarcodeScanner = ({ onScanSuccess, onScanError }) => {
-  const containerRef = useRef(null);
-  const barkoderInstanceRef = useRef(null);
-  const [isInitializing, setIsInitializing] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
+  const isPausedRef = useRef(false);
 
   useEffect(() => {
+    let html5QrCode;
     let active = true;
 
-    const initScanner = async () => {
+    const startScanner = async () => {
+      html5QrCode = new Html5Qrcode("reader");
       try {
-        const BarkoderSDK = await import('barkoder-wasm');
-        
-        let initFn = BarkoderSDK.initialize || (BarkoderSDK.default && BarkoderSDK.default.initialize);
-        if (!initFn) {
-            throw new Error("Could not find initialize function on imported module.");
-        }
-
-        // Pass a dummy string so it doesn't throw empty string errors. 
-        // Barkoder will run in evaluation mode (with asterisks).
-        const barkoder = await initFn("your_license_key_here");
-        
-        if (!active) {
-            barkoder.stopScanner();
-            return;
-        }
-
-        barkoderInstanceRef.current = barkoder;
-        
-        barkoder.setBarcodeTypeEnabled(barkoder.constants.Decoders.Code128, true);
-        barkoder.setBarcodeTypeEnabled(barkoder.constants.Decoders.Ean13, true);
-        
-        barkoder.setCameraResolution(barkoder.constants.CameraResolution.FHD);
-        barkoder.setDecodingSpeed(barkoder.constants.DecodingSpeed.Normal);
-
-        setIsInitializing(false);
-
-        const callbackMethod = (result) => {
-          if (result && result.textualData) {
-            barkoder.stopScanner();
-            onScanSuccess(result.textualData, result, { resume: () => barkoder.startScanner(callbackMethod) });
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          {
+            fps: 10,
+            qrbox: { width: 350, height: 150 }, // Rectangular box is better for 1D barcodes
+            aspectRatio: 1.777778, // 16:9
+          },
+          (decodedText, decodedResult) => {
+            if (active && !isPausedRef.current) {
+                isPausedRef.current = true;
+                if (html5QrCode.pause) {
+                    try { html5QrCode.pause(); } catch(e) {}
+                }
+                onScanSuccess(decodedText, decodedResult, {
+                    resume: () => {
+                        isPausedRef.current = false;
+                        if (html5QrCode.resume) {
+                            try { html5QrCode.resume(); } catch(e) {}
+                        }
+                    }
+                });
+            }
+          },
+          (errorMessage) => {
+            // These are expected per frame when no barcode is found
           }
-        };
-
-        barkoder.startScanner(callbackMethod);
-
+        );
       } catch (err) {
-        console.error("Barkoder initialization failed:", err);
-        setErrorMsg(err.message || String(err));
-        setIsInitializing(false);
+        console.error("Scanner error:", err);
         if (onScanError) onScanError(err);
       }
     };
 
-    initScanner();
+    startScanner();
 
     return () => {
       active = false;
-      if (barkoderInstanceRef.current) {
-        barkoderInstanceRef.current.stopScanner();
+      if (html5QrCode && html5QrCode.isScanning) {
+        html5QrCode.stop().then(() => html5QrCode.clear()).catch(console.error);
       }
     };
   }, [onScanSuccess, onScanError]);
 
   return (
     <div style={{ position: "relative", width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-      {isInitializing && <div style={{ color: "black", textAlign: "center", padding: "20px" }}>Initializing Scanner...</div>}
-      {errorMsg && <div style={{ color: "red", textAlign: "center", padding: "20px" }}>Error: {errorMsg}</div>}
       <div 
-        id="barkoder-container" 
-        ref={containerRef} 
-        style={{ width: "100%", height: "400px", margin: "0 auto", position: "relative", overflow: "hidden", backgroundColor: "black", borderRadius: "0.5rem", display: (isInitializing || errorMsg) ? 'none' : 'block' }}
-      >
-      </div>
+        id="reader" 
+        style={{ width: "100%", margin: "0 auto", overflow: "hidden", borderRadius: "0.5rem" }}
+      ></div>
     </div>
   );
 };
