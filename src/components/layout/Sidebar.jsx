@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Home, PlusSquare, LayoutGrid, ScanLine, Clock, User, LogOut, BarChart3 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -16,9 +16,11 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
     { name: 'Take Attendance', href: '/dashboard/attendance', icon: ScanLine },
   ];
 
+  const router = useRouter();
+
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
-    window.location.href = '/login';
+    router.push('/login');
   };
 
   return (

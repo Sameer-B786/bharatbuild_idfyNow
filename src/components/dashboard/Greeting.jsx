@@ -3,18 +3,24 @@
 import { useEffect, useState } from "react";
 
 export function Greeting() {
-  const [greeting, setGreeting] = useState("Good Morning,");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) {
-      setGreeting("Good Morning,");
-    } else if (hour < 17) {
-      setGreeting("Good Afternoon,");
-    } else {
-      setGreeting("Good Evening,");
-    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
   }, []);
+
+  if (!mounted) {
+    return <h2 className="text-2xl font-bold text-gray-900">Welcome,</h2>;
+  }
+
+  const hour = new Date().getHours();
+  let greeting = "Good Morning,";
+  if (hour >= 12 && hour < 17) {
+    greeting = "Good Afternoon,";
+  } else if (hour >= 17) {
+    greeting = "Good Evening,";
+  }
 
   return <h2 className="text-2xl font-bold text-gray-900">{greeting}</h2>;
 }

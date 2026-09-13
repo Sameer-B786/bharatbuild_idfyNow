@@ -43,7 +43,7 @@ export default function ForgotPassword() {
             {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">{error}</div>}
             
             <p className="text-sm text-gray-600 text-center">
-              Enter your email address and we'll send you a link to reset your password.
+              Enter your email address and we&apos;ll send you a link to reset your password.
             </p>
 
             <div>
@@ -78,7 +78,7 @@ export default function ForgotPassword() {
             <div className="p-4 bg-green-50 text-green-700 rounded-lg">
               <h3 className="text-lg font-medium">Check your email</h3>
               <p className="mt-2 text-sm">
-                We've sent a password reset link to <span className="font-semibold">{email}</span>.
+                We&apos;ve sent a password reset link to <span className="font-semibold">{email}</span>.
               </p>
             </div>
             

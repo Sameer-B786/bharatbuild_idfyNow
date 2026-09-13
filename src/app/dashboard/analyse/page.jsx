@@ -159,8 +159,8 @@ export default function AnalysePage() {
               const border = insight.border || "border-blue-100";
               
               return (
-                <div key={idx} className={p-6 rounded-2xl border  }>
-                  <div className={w-10 h-10 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm }>
+                <div key={idx} className={`p-6 rounded-2xl border ${bg} ${border}`}>
+                  <div className={`w-10 h-10 rounded-xl bg-white flex items-center justify-center mb-4 shadow-sm ${color}`}>
                     <IconComp className="w-5 h-5" />
                   </div>
                   <h4 className="font-bold text-gray-900 mb-2">{insight.title}</h4>

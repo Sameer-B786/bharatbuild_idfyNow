@@ -58,7 +58,7 @@ function VerifyForm() {
           {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">{error}</div>}
           
           <p className="text-sm text-gray-600 text-center">
-            We've sent a verification code to your email. Please enter it below to confirm your account.
+            We&apos;ve sent a verification code to your email. Please enter it below to confirm your account.
           </p>
 
           <div>
