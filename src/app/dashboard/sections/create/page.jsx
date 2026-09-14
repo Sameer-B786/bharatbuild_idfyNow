@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
+import * as XLSX from "xlsx";
 
 export default function CreateSection() {
   const [step, setStep] = useState(1);
@@ -19,30 +20,72 @@ export default function CreateSection() {
   });
   const [file, setFile] = useState(null);
   const [previewData, setPreviewData] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Mock file upload and parsing
   const handleFileUpload = (e) => {
     e.preventDefault();
     const uploadedFile = e.target.files?.[0] || e.dataTransfer?.files?.[0];
     if (uploadedFile) {
       setFile(uploadedFile);
-      // Mock parsing after a short delay
-      setTimeout(() => {
-        setPreviewData([
-          { id: "101", name: "Rahul Sharma" },
-          { id: "102", name: "Priya Singh" },
-          { id: "103", name: "Amit Kumar" },
-          { id: "104", name: "Neha Gupta" },
-          { id: "105", name: "Vikram Reddy" },
-        ]);
+      
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const bstr = evt.target.result;
+        const wb = XLSX.read(bstr, { type: 'binary' });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_json(ws);
+        
+        // Map the parsed data to expected format (id, name)
+        const mappedData = data.map((row, index) => ({
+          id: row['Student ID'] || row['ID'] || row['Roll No'] || row['RollNo'] || `temp-${index}`,
+          name: row['Student Name'] || row['Name'] || row['StudentName'] || 'Unknown'
+        }));
+        
+        setPreviewData(mappedData);
         setStep(2);
-      }, 1000);
+      };
+      reader.readAsBinaryString(uploadedFile);
     }
   };
 
-  const handleCreate = () => {
-    // Mock save
-    setStep(3);
+  const handleCreate = async () => {
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        ...formData,
+        students: previewData
+      };
+
+      // Replace with your actual API Gateway URL
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'YOUR_API_GATEWAY_URL_HERE';
+      
+      // We still mock it if there's no API URL set to prevent crashes during demo
+      if (apiUrl === 'YOUR_API_GATEWAY_URL_HERE') {
+        console.log('Mocking API call with payload:', payload);
+        setTimeout(() => setStep(3), 1000);
+        return;
+      }
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create section');
+      }
+
+      setStep(3);
+    } catch (error) {
+      console.error('Error creating section:', error);
+      alert('Failed to save section data.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -159,8 +202,8 @@ export default function CreateSection() {
 
           <div className="p-6 border-t bg-gray-50/50 flex justify-end gap-3">
             <Button variant="outline" onClick={() => setStep(1)} className="rounded-xl">Cancel</Button>
-            <Button onClick={handleCreate} className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white">
-              Save Section Data
+            <Button onClick={handleCreate} disabled={isSubmitting} className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white">
+              {isSubmitting ? 'Saving...' : 'Save Section Data'}
             </Button>
           </div>
         </div>
