@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ArrowLeft, UploadCloud, FileSpreadsheet, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,7 @@ export default function CreateSection() {
   const [file, setFile] = useState(null);
   const [previewData, setPreviewData] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleFileUpload = (e) => {
     e.preventDefault();
@@ -149,10 +150,24 @@ export default function CreateSection() {
               <p className="text-sm text-gray-500 mb-6 max-w-sm">
                 Drag and drop your .xlsx or .xls file here, or click to browse. Ensure it contains Student ID and Name columns.
               </p>
-              <Button type="button" variant="outline" className="rounded-xl border-orange-200 text-orange-600 hover:bg-orange-50">
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="rounded-xl border-orange-200 text-orange-600 hover:bg-orange-50"
+                onClick={(e) => {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }}
+              >
                 Browse Files
               </Button>
-              <input type="file" className="hidden" accept=".xlsx, .xls" onChange={handleFileUpload} />
+              <input 
+                ref={fileInputRef}
+                type="file" 
+                className="hidden" 
+                accept=".xlsx, .xls" 
+                onChange={handleFileUpload} 
+              />
             </label>
           </div>
 
