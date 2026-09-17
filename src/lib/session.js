@@ -1,13 +1,12 @@
 import { cookies } from 'next/headers';
-import { encrypt, decrypt } from './jwt';
+import { decodeJwt } from 'jose';
 
-export async function createSession(userInfo) {
-  const expires = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours
-  const session = await encrypt({ userInfo, expires });
-
+export async function createSession({ idToken }) {
   const cookieStore = await cookies();
-  cookieStore.set('session', session, {
-    expires,
+  const decoded = decodeJwt(idToken);
+  
+  cookieStore.set('idToken', idToken, {
+    expires: new Date(decoded.exp * 1000),
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -17,14 +16,30 @@ export async function createSession(userInfo) {
 
 export async function getSession() {
   const cookieStore = await cookies();
-  const session = cookieStore.get('session')?.value;
-  if (!session) return null;
-  return await decrypt(session);
+  const idToken = cookieStore.get('idToken')?.value;
+  if (!idToken) return null;
+  
+  try {
+    const decoded = decodeJwt(idToken);
+    // Check if token is expired
+    if (decoded.exp * 1000 < Date.now()) {
+      return null;
+    }
+    
+    return {
+      userInfo: {
+        email: decoded.email,
+        name: decoded.name || decoded.email?.split('@')[0],
+      }
+    };
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function clearSession() {
   const cookieStore = await cookies();
-  cookieStore.set('session', '', {
+  cookieStore.set('idToken', '', {
     expires: new Date(0),
     httpOnly: true,
     path: '/',
