@@ -40,6 +40,10 @@ export async function POST(request) {
         {
           Name: 'name',
           Value: name,
+        },
+        {
+          Name: 'updated_at',
+          Value: Math.floor(Date.now() / 1000).toString(),
         }
       ],
     });
