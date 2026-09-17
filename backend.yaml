@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: IDfyNow Backend - API Gateway, Lambda, and S3 for Sections
+
+Resources:
+  # 1. S3 Bucket to store sections
+  SectionsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: ['GET', 'PUT', 'POST', 'DELETE', 'HEAD']
+            AllowedOrigins: ['*']
+
+  # 2. Lambda Function
+  CreateSectionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # This points to the lambda directory. AWS SAM CLI will package it.
+      CodeUri: LAMBDA_1/create-class-lambda/
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Timeout: 10
+      MemorySize: 256
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref SectionsBucket
+      # Automatically creates IAM policy to read/write to the bucket
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref SectionsBucket
+      Events:
+        CreateSectionApi:
+          Type: Api
+          Properties:
+            Path: /api/sections
+            Method: post
+
+Outputs:
+  ApiGatewayEndpoint:
+    Description: "API Gateway endpoint URL for frontend NEXT_PUBLIC_API_URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/api/sections"
+  S3BucketName:
+    Description: "Name of the S3 bucket created for sections"
+    Value: !Ref SectionsBucket

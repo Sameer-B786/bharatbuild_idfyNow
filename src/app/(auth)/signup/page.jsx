@@ -50,7 +50,7 @@ export default function SignUp() {
         }
       } else {
         // User needs to confirm email via OTP
-        router.push(`/verify?email=${encodeURIComponent(email)}`);
+        router.push(`/verify?email=${encodeURIComponent(email)}&username=${encodeURIComponent(signupData.username)}`);
       }
       
     } catch (err) {

@@ -52,7 +52,8 @@ export async function POST(request) {
 
     return NextResponse.json({ 
       success: true, 
-      userConfirmed: response.UserConfirmed 
+      userConfirmed: response.UserConfirmed,
+      username: generatedUsername
     });
 
   } catch (error) {

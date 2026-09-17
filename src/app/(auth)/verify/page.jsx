@@ -10,6 +10,7 @@ import Link from 'next/link';
 function VerifyForm() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get('email') || '';
+  const usernameParam = searchParams.get('username') || '';
   
   const [email, setEmail] = useState(emailParam);
   const [code, setCode] = useState('');
@@ -27,7 +28,7 @@ function VerifyForm() {
       const res = await fetch('/api/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code }),
+        body: JSON.stringify({ email, code, username: usernameParam }),
       });
       
       if (res.ok) {

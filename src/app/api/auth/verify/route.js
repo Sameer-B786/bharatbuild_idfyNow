@@ -16,18 +16,21 @@ function calculateSecretHash(username) {
 
 export async function POST(request) {
   try {
-    const { email, code } = await request.json();
+    const { email, code, username } = await request.json();
 
     if (!email || !code) {
       return NextResponse.json({ error: 'Email and verification code are required' }, { status: 400 });
     }
 
     const client = new CognitoIdentityProviderClient({ region: REGION });
-    const secretHash = calculateSecretHash(email);
+    
+    // We MUST use the actual UUID username if it's provided, otherwise fallback to email alias (which is buggy)
+    const actualUsername = username || email;
+    const secretHash = calculateSecretHash(actualUsername);
 
     const command = new ConfirmSignUpCommand({
       ClientId: CLIENT_ID,
-      Username: email,
+      Username: actualUsername,
       ConfirmationCode: code,
       SecretHash: secretHash,
     });
