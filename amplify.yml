@@ -6,6 +6,11 @@ frontend:
         - npm install
     build:
       commands:
+        - echo "COGNITO_CLIENT_ID=$COGNITO_CLIENT_ID" >> .env.production
+        - echo "COGNITO_CLIENT_SECRET=$COGNITO_CLIENT_SECRET" >> .env.production
+        - echo "COGNITO_REGION=$COGNITO_REGION" >> .env.production
+        - echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> .env.production
+        - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
