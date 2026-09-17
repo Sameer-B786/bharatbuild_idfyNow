@@ -4,11 +4,12 @@ import crypto from 'crypto';
 import { createSession } from '@/lib/session';
 import { decodeJwt } from 'jose';
 
-const CLIENT_ID = '2hmfg0env9k3v9ue94b9fsbjmc';
-const CLIENT_SECRET = '15fav35q8tnflbeckaovkst8j1d9gi5lhugkerr5j2v7lpog1im9';
-const REGION = 'ap-south-1';
+const CLIENT_ID = process.env.COGNITO_CLIENT_ID;
+const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET;
+const REGION = process.env.COGNITO_REGION || 'ap-south-1';
 
 function calculateSecretHash(username) {
+  if (!CLIENT_SECRET) return undefined;
   return crypto
     .createHmac('SHA256', CLIENT_SECRET)
     .update(username + CLIENT_ID)
