@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SectionCard } from "@/components/sections/SectionCard";
-import { Users, LayoutGrid, Calendar, Code2, Bell, Cpu, FileText, Plus, ScanLine, FilePlus, Settings, MoreVertical, ArrowRight } from "lucide-react";
+import { Users, LayoutGrid, Calendar, Plus, ScanLine, FilePlus, Settings, MoreVertical, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -63,23 +63,18 @@ export default async function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               <SectionCard 
                 title="B.E CSE - A" subtitle="Computer Science" students={48} sem={4} status="Excel Connected" 
-                icon={Code2} iconBg="bg-blue-50" iconColor="text-blue-500" 
               />
               <SectionCard 
                 title="B.E CSE - B" subtitle="Computer Science" students={48} sem={4} status="Excel Connected" 
-                icon={Bell} iconBg="bg-purple-50" iconColor="text-purple-500" 
               />
               <SectionCard 
                 title="B.E ECE - A" subtitle="Electronics" students={42} sem={4} status="Excel Connected" 
-                icon={Cpu} iconBg="bg-emerald-50" iconColor="text-emerald-500" 
               />
               <SectionCard 
                 title="B.E ME - A" subtitle="Mechanical" students={35} sem={4} status="Excel Connected" 
-                icon={FileText} iconBg="bg-rose-50" iconColor="text-rose-500" 
               />
               <SectionCard 
                 title="B.E CSE - C" subtitle="Computer Science" students={44} sem={4} status="File Pending" 
-                icon={FileText} iconBg="bg-amber-50" iconColor="text-amber-500" 
               />
               
               {/* Create New Section Card */}

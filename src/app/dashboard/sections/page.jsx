@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Search, MoreVertical, Code2, Bell, Cpu, FileText } from "lucide-react";
+import { Plus, Search, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SectionCard } from "@/components/sections/SectionCard";
@@ -11,11 +11,11 @@ export default function SectionsList() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const sections = [
-    { title: "B.E CSE - A", subtitle: "Computer Science", students: 48, sem: 4, status: "Excel Connected", icon: Code2, iconBg: "bg-blue-50", iconColor: "text-blue-500" },
-    { title: "B.E CSE - B", subtitle: "Computer Science", students: 48, sem: 4, status: "Excel Connected", icon: Bell, iconBg: "bg-purple-50", iconColor: "text-purple-500" },
-    { title: "B.E ECE - A", subtitle: "Electronics", students: 42, sem: 4, status: "Excel Connected", icon: Cpu, iconBg: "bg-emerald-50", iconColor: "text-emerald-500" },
-    { title: "B.E ME - A", subtitle: "Mechanical", students: 35, sem: 4, status: "Excel Connected", icon: FileText, iconBg: "bg-rose-50", iconColor: "text-rose-500" },
-    { title: "B.E CSE - C", subtitle: "Computer Science", students: 44, sem: 4, status: "File Pending", icon: FileText, iconBg: "bg-amber-50", iconColor: "text-amber-500" },
+    { title: "B.E CSE - A", subtitle: "Computer Science", students: 48, sem: 4, status: "Excel Connected" },
+    { title: "B.E CSE - B", subtitle: "Computer Science", students: 48, sem: 4, status: "Excel Connected" },
+    { title: "B.E ECE - A", subtitle: "Electronics", students: 42, sem: 4, status: "Excel Connected" },
+    { title: "B.E ME - A", subtitle: "Mechanical", students: 35, sem: 4, status: "Excel Connected" },
+    { title: "B.E CSE - C", subtitle: "Computer Science", students: 44, sem: 4, status: "File Pending" },
   ];
 
   const filteredSections = sections.filter(s => 
