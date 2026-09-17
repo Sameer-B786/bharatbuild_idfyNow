@@ -23,11 +23,13 @@ export async function POST(request) {
     }
 
     const client = new CognitoIdentityProviderClient({ region: REGION });
-    const secretHash = calculateSecretHash(email);
+    // Generate a unique username (UUID) because Cognito rejects emails in the Username field if email alias is enabled
+    const generatedUsername = crypto.randomUUID();
+    const secretHash = calculateSecretHash(generatedUsername);
 
     const command = new SignUpCommand({
       ClientId: CLIENT_ID,
-      Username: email,
+      Username: generatedUsername,
       Password: password,
       SecretHash: secretHash,
       UserAttributes: [
