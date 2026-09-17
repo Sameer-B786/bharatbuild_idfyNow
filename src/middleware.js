@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { decodeJwt } from 'jose';
 
-export async function proxy(request) {
+export async function middleware(request) {
   const path = request.nextUrl.pathname;
   const isProtectedRoute = path.startsWith('/dashboard');
   const isPublicRoute = path === '/login' || path === '/signup' || path === '/forgot-password' || path === '/verify';
