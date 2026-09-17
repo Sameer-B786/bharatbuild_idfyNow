@@ -1,27 +1,5 @@
-import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-
-const secretKey = process.env.SESSION_SECRET || 'some secret';
-const key = new TextEncoder().encode(secretKey);
-
-export async function encrypt(payload) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('2h')
-    .sign(key);
-}
-
-export async function decrypt(input) {
-  try {
-    const { payload } = await jwtVerify(input, key, {
-      algorithms: ['HS256'],
-    });
-    return payload;
-  } catch (error) {
-    return null;
-  }
-}
+import { encrypt, decrypt } from './jwt';
 
 export async function createSession(userInfo) {
   const expires = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours

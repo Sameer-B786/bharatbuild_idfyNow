@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { decrypt } from '@/lib/session';
+import { decrypt } from '@/lib/jwt';
 
 export async function proxy(request) {
   const path = request.nextUrl.pathname;
