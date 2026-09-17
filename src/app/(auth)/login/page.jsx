@@ -44,7 +44,7 @@ export default function Login() {
       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">IDfyNow</h2>
-          <p className="text-gray-500 mt-2">Sign in to your college portal</p>
+          <p className="text-gray-500 mt-2">Sign in as faculty</p>
         </div>
         
         <form className="space-y-6" onSubmit={handleLogin}>
