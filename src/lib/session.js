@@ -15,11 +15,11 @@ export async function createSession({ idToken }) {
 }
 
 export async function getSession() {
-  const cookieStore = await cookies();
-  const idToken = cookieStore.get('idToken')?.value;
-  if (!idToken) return null;
-  
   try {
+    const cookieStore = await cookies();
+    const idToken = cookieStore.get('idToken')?.value;
+    if (!idToken) return null;
+    
     const decoded = decodeJwt(idToken);
     // Check if token is expired
     if (decoded.exp * 1000 < Date.now()) {
@@ -33,6 +33,7 @@ export async function getSession() {
       }
     };
   } catch (error) {
+    console.error('Session Error:', error);
     return null;
   }
 }
