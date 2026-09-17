@@ -21,11 +21,15 @@ export async function proxy(request) {
   }
 
   if (isProtectedRoute && !isValidSession) {
-    return NextResponse.redirect(new URL('/login', request.nextUrl));
+    const response = NextResponse.redirect(new URL('/login', request.nextUrl));
+    response.headers.set('Cache-Control', 'no-store, max-age=0');
+    return response;
   }
 
   if (isPublicRoute && isValidSession) {
-    return NextResponse.redirect(new URL('/dashboard', request.nextUrl));
+    const response = NextResponse.redirect(new URL('/dashboard', request.nextUrl));
+    response.headers.set('Cache-Control', 'no-store, max-age=0');
+    return response;
   }
 
   return NextResponse.next();
