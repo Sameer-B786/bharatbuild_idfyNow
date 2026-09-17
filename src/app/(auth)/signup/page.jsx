@@ -100,6 +100,7 @@ export default function SignUp() {
                 placeholder="you@example.com"
               />
             </div>
+            <p className="text-xs text-gray-500 mt-2">Only .com and .in domains are supported.</p>
           </div>
 
           <div>

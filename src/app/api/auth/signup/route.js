@@ -22,6 +22,11 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Name, email and password are required' }, { status: 400 });
     }
 
+    const emailDomain = email.split('@')[1]?.toLowerCase();
+    if (!emailDomain || !(emailDomain.endsWith('.com') || emailDomain.endsWith('.in'))) {
+      return NextResponse.json({ error: 'Only .com and .in email domains are allowed' }, { status: 400 });
+    }
+
     const client = new CognitoIdentityProviderClient({ region: REGION });
     // Generate a unique username (UUID) because Cognito rejects emails in the Username field if email alias is enabled
     const generatedUsername = crypto.randomUUID();
