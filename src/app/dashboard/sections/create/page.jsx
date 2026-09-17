@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
-import * as XLSX from "xlsx";
+
 
 export default function CreateSection() {
   const [step, setStep] = useState(1);
@@ -30,7 +30,8 @@ export default function CreateSection() {
       setFile(uploadedFile);
       
       const reader = new FileReader();
-      reader.onload = (evt) => {
+      reader.onload = async (evt) => {
+        const XLSX = await import("xlsx");
         const bstr = evt.target.result;
         const wb = XLSX.read(bstr, { type: 'binary' });
         const wsname = wb.SheetNames[0];
