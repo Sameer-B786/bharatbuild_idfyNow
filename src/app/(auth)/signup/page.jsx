@@ -43,8 +43,7 @@ export default function SignUp() {
         });
 
         if (loginRes.ok) {
-          router.push('/dashboard');
-          router.refresh();
+          window.location.href = '/dashboard';
         } else {
           router.push('/login?message=signup_success_please_login');
         }
