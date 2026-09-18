@@ -24,9 +24,10 @@ import {
 
 import { Download } from "lucide-react";
 
-export function SectionCard({ title, subtitle, students, sem, status, studentsList }) {
+export function SectionCard({ id, title, subtitle, students, sem, status, studentsList }) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isConnectOpen, setIsConnectOpen] = useState(false);
   
   const handleExportExcel = async () => {
     try {
@@ -66,6 +67,10 @@ export function SectionCard({ title, subtitle, students, sem, status, studentsLi
               <DropdownMenuItem onClick={handleExportExcel} className="text-emerald-600 focus:bg-emerald-50 focus:text-emerald-700">
                 <Download className="w-4 h-4 mr-2" />
                 Export Attendance
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsConnectOpen(true)} className="text-blue-600 focus:bg-blue-50 focus:text-blue-700">
+                <svg className="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                Connect to ERP / PowerBI
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
                 Edit Section
@@ -157,6 +162,39 @@ export function SectionCard({ title, subtitle, students, sem, status, studentsLi
             <Button variant="destructive" className="bg-red-600 hover:bg-red-700 text-white" onClick={() => setIsDeleteOpen(false)}>
               Delete Section
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Connect Integration Dialog */}
+      <Dialog open={isConnectOpen} onOpenChange={setIsConnectOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Connect Live Data</DialogTitle>
+            <DialogDescription>
+              Use these live URLs to connect {title}'s attendance data to Google Sheets, PowerBI, or your College ERP. Data updates instantly when attendance is taken.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label>CSV Endpoint (Best for Google Sheets / Excel)</Label>
+              <div className="flex gap-2">
+                <Input readOnly value={`https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections?sectionId=${id}&format=csv`} className="text-xs font-mono bg-gray-50" />
+                <Button variant="outline" onClick={() => navigator.clipboard.writeText(`https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections?sectionId=${id}&format=csv`)}>Copy</Button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Formula: <code className="bg-gray-100 px-1 rounded">=IMPORTDATA("...")</code></p>
+            </div>
+            
+            <div className="grid gap-2 mt-2">
+              <Label>JSON Endpoint (Best for custom ERPs)</Label>
+              <div className="flex gap-2">
+                <Input readOnly value={`https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections?sectionId=${id}`} className="text-xs font-mono bg-gray-50" />
+                <Button variant="outline" onClick={() => navigator.clipboard.writeText(`https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections?sectionId=${id}`)}>Copy</Button>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setIsConnectOpen(false)} className="w-full">Done</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
