@@ -88,13 +88,24 @@ export default function CreateSection() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create section');
+        let errorDetails = `Status ${response.status}`;
+        try {
+           const errData = await response.json();
+           if (errData.message) errorDetails += ` - ${errData.message}`;
+        } catch(e) {} // Ignore if not JSON
+        throw new Error(errorDetails);
       }
 
       setStep(3);
     } catch (error) {
       console.error('Error creating section:', error);
-      alert('Failed to save section data.');
+      
+      // If it's a TypeError, it means the browser blocked it entirely (usually CORS)
+      if (error.name === 'TypeError') {
+        alert('CORS or Network Error! Did you click "Deploy API" in API Gateway after enabling CORS?');
+      } else {
+        alert(`AWS says: ${error.message}`);
+      }
     } finally {
       setIsSubmitting(false);
     }

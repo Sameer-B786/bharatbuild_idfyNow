@@ -126,12 +126,23 @@ export default function AttendancePage() {
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) throw new Error('Failed to submit attendance');
+      if (!response.ok) {
+        let errorDetails = `Status ${response.status}`;
+        try {
+           const errData = await response.json();
+           if (errData.message) errorDetails += ` - ${errData.message}`;
+        } catch(e) {} 
+        throw new Error(errorDetails);
+      }
       
       setSessionState("SUBMITTED");
     } catch (error) {
       console.error('Error submitting attendance:', error);
-      alert('Failed to submit attendance.');
+      if (error.name === 'TypeError') {
+        alert('CORS or Network Error! Did you click "Deploy API" in API Gateway after enabling CORS?');
+      } else {
+        alert(`AWS says: ${error.message}`);
+      }
       setSessionState("IDLE");
     }
   };
