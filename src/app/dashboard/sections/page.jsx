@@ -34,7 +34,8 @@ export default function SectionsList() {
             subtitle: item.subject || 'N/A',
             students: item.students?.length || 0,
             sem: item.semester || '-',
-            status: item.students && item.students.length > 0 ? "Excel Connected" : "File Pending"
+            status: item.students && item.students.length > 0 ? "Excel Connected" : "File Pending",
+            studentsList: item.students || []
           }));
           setSections(mappedSections);
         }

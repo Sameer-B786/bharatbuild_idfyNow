@@ -22,9 +22,31 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export function SectionCard({ title, subtitle, students, sem, status }) {
+import { Download } from "lucide-react";
+
+export function SectionCard({ title, subtitle, students, sem, status, studentsList }) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  
+  const handleExportExcel = async () => {
+    try {
+      if (!studentsList || studentsList.length === 0) {
+        alert("No student data to export.");
+        return;
+      }
+      const XLSX = await import("xlsx");
+      // Create worksheet from studentsList JSON
+      // XLSX automatically makes columns out of the object keys, which will perfectly include the new date keys (e.g. "2026-09-18": "P")
+      const ws = XLSX.utils.json_to_sheet(studentsList);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Attendance");
+      // Save it
+      XLSX.writeFile(wb, `${title}_Attendance.xlsx`);
+    } catch (e) {
+      console.error("Error exporting excel", e);
+      alert("Failed to export Excel");
+    }
+  };
 
   return (
     <>
@@ -40,7 +62,11 @@ export function SectionCard({ title, subtitle, students, sem, status }) {
                 <MoreVertical className="w-5 h-5" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40 rounded-xl">
+            <DropdownMenuContent align="end" className="w-48 rounded-xl">
+              <DropdownMenuItem onClick={handleExportExcel} className="text-emerald-600 focus:bg-emerald-50 focus:text-emerald-700">
+                <Download className="w-4 h-4 mr-2" />
+                Export Attendance
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
                 Edit Section
               </DropdownMenuItem>

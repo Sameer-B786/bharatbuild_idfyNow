@@ -30,7 +30,8 @@ export function DashboardSections() {
             subtitle: item.subject || 'N/A',
             students: item.students?.length || 0,
             sem: item.semester || '-',
-            status: item.students && item.students.length > 0 ? "Excel Connected" : "File Pending"
+            status: item.students && item.students.length > 0 ? "Excel Connected" : "File Pending",
+            studentsList: item.students || []
           }));
           // Only show up to 5 recent sections on dashboard to leave room for the "Create New" button
           setSections(mappedSections.slice(0, 5));

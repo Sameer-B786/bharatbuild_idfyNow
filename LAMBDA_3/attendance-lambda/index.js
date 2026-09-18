@@ -20,11 +20,9 @@ exports.handler = async (event) => {
         }
 
         const bucketName = process.env.BUCKET_NAME;
-        if (!bucketName) {
-            throw new Error('BUCKET_NAME environment variable is not defined');
-        }
+        if (!bucketName) throw new Error('BUCKET_NAME environment variable is not defined');
 
-        // Format: attendance/{sectionId}/{date-uuid}.json
+        // 1. Save the standalone attendance record
         const recordId = randomUUID();
         const objectKey = `attendance/${sectionId}/${date}_${recordId}.json`;
         
@@ -36,14 +34,44 @@ exports.handler = async (event) => {
             timestamp: new Date().toISOString()
         };
 
-        const putParams = {
+        await s3Client.send(new PutObjectCommand({
             Bucket: bucketName,
             Key: objectKey,
             Body: JSON.stringify(record),
             ContentType: 'application/json'
-        };
+        }));
 
-        await s3Client.send(new PutObjectCommand(putParams));
+        // 2. ALSO update the main section JSON file so it has the new column dynamically
+        try {
+            const { GetObjectCommand } = require('@aws-sdk/client-s3');
+            const sectionRes = await s3Client.send(new GetObjectCommand({
+                Bucket: bucketName,
+                Key: `sections/${sectionId}.json`
+            }));
+            const sectionContent = await sectionRes.Body.transformToString();
+            const sectionData = JSON.parse(sectionContent);
+            
+            if (sectionData.students && Array.isArray(sectionData.students)) {
+                // Update each student with the new date column (P or A)
+                sectionData.students = sectionData.students.map(student => {
+                    const attRecord = attendanceData.find(a => String(a.id) === String(student.id));
+                    if (attRecord) {
+                        student[date] = attRecord.present ? 'P' : 'A';
+                    }
+                    return student;
+                });
+
+                // Save it back to S3
+                await s3Client.send(new PutObjectCommand({
+                    Bucket: bucketName,
+                    Key: `sections/${sectionId}.json`,
+                    Body: JSON.stringify(sectionData),
+                    ContentType: 'application/json'
+                }));
+            }
+        } catch (updateErr) {
+            console.error("Non-fatal: Failed to update main section file", updateErr);
+        }
 
         return {
             statusCode: 201,
