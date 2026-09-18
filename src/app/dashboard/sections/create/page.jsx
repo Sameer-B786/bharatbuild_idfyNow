@@ -38,11 +38,22 @@ export default function CreateSection() {
         const ws = wb.Sheets[wsname];
         const data = XLSX.utils.sheet_to_json(ws);
         
-        // Map the parsed data to expected format (id, name)
-        const mappedData = data.map((row, index) => ({
-          id: row['Student ID'] || row['ID'] || row['Roll No'] || row['RollNo'] || `temp-${index}`,
-          name: row['Student Name'] || row['Name'] || row['StudentName'] || 'Unknown'
-        }));
+        // Map the parsed data to expected format (id, name) dynamically for any institution
+        const mappedData = data.map((row, index) => {
+          // Find a column header that matches common ID formats (ID, Roll No, USN, Reg No)
+          const idKey = Object.keys(row).find(key => 
+            /id|roll|usn|reg|enroll/i.test(key.replace(/\s+/g, ''))
+          );
+          // Find a column header for Name
+          const nameKey = Object.keys(row).find(key => 
+            /name|student/i.test(key) && !/id|roll|usn|reg|enroll/i.test(key)
+          );
+
+          return {
+            id: String(idKey && row[idKey] ? row[idKey] : `temp-${index}`).trim(),
+            name: String(nameKey && row[nameKey] ? row[nameKey] : 'Unknown').trim()
+          };
+        });
         
         setPreviewData(mappedData);
         setStep(2);
@@ -149,7 +160,7 @@ export default function CreateSection() {
               </div>
               <h4 className="font-semibold text-gray-900 text-lg mb-1">Upload Excel File</h4>
               <p className="text-sm text-gray-500 mb-6 max-w-sm">
-                Drag and drop your .xlsx or .xls file here, or click to browse. Ensure it contains Student ID and Name columns.
+                Drag and drop your .xlsx or .xls file here, or click to browse. Ensure it contains a column for ID (USN, Roll No, Reg No) and Name.
               </p>
               <Button 
                 type="button" 

@@ -43,9 +43,15 @@ export default function AttendancePage() {
 
   const processScan = (idToScan) => {
     if (!idToScan) return;
+    // Ensure robust matching by comparing trimmed, case-insensitive strings
+    const cleanScan = String(idToScan).trim().toLowerCase();
     
-    // Simulate finding a student
-    const studentIndex = students.findIndex(s => s.id === idToScan || s.id === idToScan.replace('STU', ''));
+    // Find matching student (supports exact match or matches ignoring special characters)
+    const studentIndex = students.findIndex(s => {
+      const dbId = String(s.id).trim().toLowerCase();
+      return dbId === cleanScan || 
+             dbId.replace(/[^a-z0-9]/g, '') === cleanScan.replace(/[^a-z0-9]/g, '');
+    });
     
     if (studentIndex >= 0) {
       const student = students[studentIndex];
