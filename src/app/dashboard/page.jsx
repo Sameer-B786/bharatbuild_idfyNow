@@ -5,7 +5,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SectionCard } from "@/components/sections/SectionCard";
 import { Users, LayoutGrid, Calendar, Plus, ScanLine, FilePlus, Settings, MoreVertical, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -13,6 +12,7 @@ import Link from "next/link";
 import { getSession } from "@/lib/session";
 
 import { Greeting } from "@/components/dashboard/Greeting";
+import { DashboardSections } from "@/components/dashboard/DashboardSections";
 
 export default async function Dashboard() {
   const session = await getSession();
@@ -60,36 +60,7 @@ export default async function Dashboard() {
               <Link href="/dashboard/sections" className="text-sm font-medium text-orange-600 hover:text-orange-700">View All →</Link>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              <SectionCard 
-                title="B.E CSE - A" subtitle="Computer Science" students={48} sem={4} status="Excel Connected" 
-              />
-              <SectionCard 
-                title="B.E CSE - B" subtitle="Computer Science" students={48} sem={4} status="Excel Connected" 
-              />
-              <SectionCard 
-                title="B.E ECE - A" subtitle="Electronics" students={42} sem={4} status="Excel Connected" 
-              />
-              <SectionCard 
-                title="B.E ME - A" subtitle="Mechanical" students={35} sem={4} status="Excel Connected" 
-              />
-              <SectionCard 
-                title="B.E CSE - C" subtitle="Computer Science" students={44} sem={4} status="File Pending" 
-              />
-              
-              {/* Create New Section Card */}
-              <Link href="/dashboard/sections/create" className="border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center p-6 text-center hover:border-orange-300 hover:bg-orange-50/50 transition-colors cursor-pointer group">
-                <div className="p-3 bg-orange-50 text-orange-500 rounded-xl mb-3 group-hover:bg-orange-100 transition-colors">
-                  <Plus className="w-6 h-6" />
-                </div>
-                <h4 className="font-bold text-gray-900">Create New Section</h4>
-                <p className="text-sm text-gray-500 mt-1 mb-4">Add a new class/section and upload student data.</p>
-                <div className="border border-orange-200 text-orange-600 group-hover:bg-orange-50 group-hover:text-orange-700 w-full rounded-xl flex flex-row items-center justify-center gap-2 py-2 text-sm font-medium transition-colors">
-                  <Plus className="w-4 h-4 shrink-0" />
-                  <span>Create Section</span>
-                </div>
-              </Link>
-            </div>
+            <DashboardSections />
           </div>
         </div>
 
