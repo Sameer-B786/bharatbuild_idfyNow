@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Search, MoreVertical } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Plus, Search, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SectionCard } from "@/components/sections/SectionCard";
@@ -9,14 +9,44 @@ import Link from "next/link";
 
 export default function SectionsList() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [sections, setSections] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const sections = [
-    { title: "B.E CSE - A", subtitle: "Computer Science", students: 48, sem: 4, status: "Excel Connected" },
-    { title: "B.E CSE - B", subtitle: "Computer Science", students: 48, sem: 4, status: "Excel Connected" },
-    { title: "B.E ECE - A", subtitle: "Electronics", students: 42, sem: 4, status: "Excel Connected" },
-    { title: "B.E ME - A", subtitle: "Mechanical", students: 35, sem: 4, status: "Excel Connected" },
-    { title: "B.E CSE - C", subtitle: "Computer Science", students: 44, sem: 4, status: "File Pending" },
-  ];
+  useEffect(() => {
+    async function fetchSections() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!apiUrl || apiUrl.includes('YOUR_API_GATEWAY_URL_HERE')) {
+            console.log('No valid API URL found. Returning empty sections list.');
+            setIsLoading(false);
+            return;
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error('Failed to fetch sections');
+        
+        const result = await response.json();
+        
+        if (result.data) {
+          const mappedSections = result.data.map(item => ({
+            id: item.id,
+            title: `${item.className || ''} - ${item.sectionName || ''}`.trim(),
+            subtitle: item.subject || 'N/A',
+            students: item.students?.length || 0,
+            sem: item.semester || '-',
+            status: item.students && item.students.length > 0 ? "Excel Connected" : "File Pending"
+          }));
+          setSections(mappedSections);
+        }
+      } catch (error) {
+        console.error("Error fetching sections:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchSections();
+  }, []);
 
   const filteredSections = sections.filter(s => 
     s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -50,16 +80,22 @@ export default function SectionsList() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {filteredSections.map((section, index) => (
-          <SectionCard key={index} {...section} />
-        ))}
-        {filteredSections.length === 0 && (
-          <div className="col-span-full py-12 text-center bg-white rounded-2xl border border-dashed">
-             <p className="text-gray-500">No sections found matching your search.</p>
-          </div>
-        )}
-      </div>
+      {isLoading ? (
+        <div className="py-12 flex justify-center items-center">
+          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredSections.map((section, index) => (
+            <SectionCard key={section.id || index} {...section} />
+          ))}
+          {filteredSections.length === 0 && (
+            <div className="col-span-full py-12 text-center bg-white rounded-2xl border border-dashed">
+               <p className="text-gray-500">No sections found matching your search.</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
