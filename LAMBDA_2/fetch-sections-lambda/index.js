@@ -2,14 +2,7 @@ const { S3Client, ListObjectsV2Command, GetObjectCommand } = require('@aws-sdk/c
 
 const s3Client = new S3Client({ region: process.env.AWS_REGION || 'us-east-1' });
 
-// Helper to convert readable stream to string (for AWS SDK v3)
-const streamToString = (stream) =>
-    new Promise((resolve, reject) => {
-      const chunks = [];
-      stream.on("data", (chunk) => chunks.push(chunk));
-      stream.on("error", reject);
-      stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-    });
+
 
 exports.handler = async (event) => {
     try {
@@ -37,7 +30,7 @@ exports.handler = async (event) => {
                         Key: item.Key
                     };
                     const getResponse = await s3Client.send(new GetObjectCommand(getParams));
-                    const fileContent = await streamToString(getResponse.Body);
+                    const fileContent = await getResponse.Body.transformToString();
                     sections.push(JSON.parse(fileContent));
                 }
             }
