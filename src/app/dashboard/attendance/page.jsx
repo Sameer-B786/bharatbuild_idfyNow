@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowLeft, ScanLine, Users, CheckCircle2, XCircle, AlertCircle, Search } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, ScanLine, Users, CheckCircle2, XCircle, AlertCircle, Search, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,20 +16,38 @@ export default function AttendancePage() {
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   
-  // Mock data
-  const sections = ["B.E CSE - A", "B.E CSE - B", "B.E ECE - A", "B.E ME - A"];
+  const [fetchedSections, setFetchedSections] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const [students, setStudents] = useState([
-    { id: "101", name: "Rahul Sharma", present: false, time: null },
-    { id: "102", name: "Priya Singh", present: false, time: null },
-    { id: "103", name: "Amit Kumar", present: false, time: null },
-    { id: "104", name: "Neha Gupta", present: false, time: null },
-    { id: "105", name: "Vikram Reddy", present: false, time: null },
-  ]);
-  
+  const [students, setStudents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [barcodeInput, setBarcodeInput] = useState("");
   const [recentScans, setRecentScans] = useState([]);
+
+  useEffect(() => {
+    async function fetchSections() {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        if (!apiUrl || apiUrl.includes('YOUR_API_GATEWAY_URL_HERE')) {
+            setIsLoading(false);
+            return;
+        }
+
+        const response = await fetch(apiUrl, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Failed to fetch sections');
+        
+        const result = await response.json();
+        if (result.data) {
+          setFetchedSections(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching sections:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchSections();
+  }, []);
 
   const presentCount = students.filter(s => s.present).length;
   const absentCount = students.length - presentCount;
@@ -38,6 +56,21 @@ export default function AttendancePage() {
   const handleStartSession = (e) => {
     e.preventDefault();
     if (!selectedSection || !date) return;
+
+    // Load roster from the selected section
+    const activeSectionObj = fetchedSections.find(s => s.id === selectedSection);
+    if (activeSectionObj && activeSectionObj.students) {
+      const roster = activeSectionObj.students.map(s => ({
+        id: s.id,
+        name: s.name,
+        present: false,
+        time: null
+      }));
+      setStudents(roster);
+    } else {
+      setStudents([]);
+    }
+
     setSessionState("SCANNING");
   };
 
@@ -97,7 +130,7 @@ export default function AttendancePage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Attendance Submitted Successfully!</h2>
           <p className="text-gray-500 mb-6 max-w-md">
-            Session for {selectedSection} on {date} has been recorded.
+            Session for {fetchedSections.find(s => s.id === selectedSection)?.className} {fetchedSections.find(s => s.id === selectedSection)?.sectionName} on {date} has been recorded.
           </p>
           <div className="flex gap-6 w-full max-w-sm mb-8">
             <div className="flex-1 bg-gray-50 p-4 rounded-xl border text-center">
@@ -141,7 +174,17 @@ export default function AttendancePage() {
               required
             >
               <option value="" disabled>Choose a section...</option>
-              {sections.map(s => <option key={s} value={s}>{s}</option>)}
+              {fetchedSections.length > 0 ? (
+                fetchedSections.map(s => (
+                  <option key={s.id} value={s.id}>
+                    {s.className} {s.sectionName} ({s.subject})
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>
+                  {isLoading ? "Loading sections..." : "No sections available"}
+                </option>
+              )}
             </select>
           </div>
           
@@ -169,7 +212,11 @@ export default function AttendancePage() {
       {/* Header */}
       <div className="flex justify-between items-center bg-white p-5 rounded-2xl border shadow-sm sticky top-0 z-20">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">{selectedSection}</h2>
+          <h2 className="text-xl font-bold text-gray-900">
+            {fetchedSections.find(s => s.id === selectedSection) 
+              ? `${fetchedSections.find(s => s.id === selectedSection).className} ${fetchedSections.find(s => s.id === selectedSection).sectionName}` 
+              : selectedSection}
+          </h2>
           <p className="text-sm text-gray-500 mt-1">{new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
         </div>
         

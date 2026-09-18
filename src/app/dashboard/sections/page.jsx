@@ -22,7 +22,7 @@ export default function SectionsList() {
             return;
         }
 
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl, { cache: 'no-store' });
         if (!response.ok) throw new Error('Failed to fetch sections');
         
         const result = await response.json();
