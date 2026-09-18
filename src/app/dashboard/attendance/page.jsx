@@ -27,7 +27,7 @@ export default function AttendancePage() {
   useEffect(() => {
     async function fetchSections() {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
         if (!apiUrl || apiUrl.includes('YOUR_API_GATEWAY_URL_HERE')) {
             setIsLoading(false);
             return;
@@ -108,12 +108,32 @@ export default function AttendancePage() {
     setBarcodeInput("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSessionState("SUBMITTING");
-    // Mock API call
-    setTimeout(() => {
+    
+    try {
+      const apiUrl = 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/attendance';
+      
+      const payload = {
+        sectionId: selectedSection,
+        date: date,
+        attendanceData: students
+      };
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error('Failed to submit attendance');
+      
       setSessionState("SUBMITTED");
-    }, 1500);
+    } catch (error) {
+      console.error('Error submitting attendance:', error);
+      alert('Failed to submit attendance.');
+      setSessionState("IDLE");
+    }
   };
 
   const filteredStudents = students.filter(s => 

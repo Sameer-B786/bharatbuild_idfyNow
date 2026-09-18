@@ -12,7 +12,7 @@ export function DashboardSections() {
   useEffect(() => {
     async function fetchSections() {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
         if (!apiUrl || apiUrl.includes('YOUR_API_GATEWAY_URL_HERE')) {
             setIsLoading(false);
             return;

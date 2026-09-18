@@ -70,11 +70,10 @@ export default function CreateSection() {
         students: previewData
       };
 
-      // Replace with your actual API Gateway URL
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'YOUR_API_GATEWAY_URL_HERE';
+      // Use the provided API Gateway endpoint
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
       
-      // We still mock it if there's no API URL set to prevent crashes during demo
-      if (apiUrl === 'YOUR_API_GATEWAY_URL_HERE') {
+      if (!apiUrl || apiUrl.includes('YOUR_API_GATEWAY_URL_HERE')) {
         console.log('Mocking API call with payload:', payload);
         setTimeout(() => setStep(3), 1000);
         return;
