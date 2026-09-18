@@ -2,6 +2,13 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: IDfyNow Backend - API Gateway, Lambda, and S3 for Sections
 
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,OPTIONS,DELETE,PUT'"
+      AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+      AllowOrigin: "'*'"
+
 Resources:
   # 1. S3 Bucket to store sections
   SectionsBucket:
@@ -36,6 +43,69 @@ Resources:
           Properties:
             Path: /api/sections
             Method: post
+
+  FetchSectionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: LAMBDA_2/fetch-sections-lambda/
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Timeout: 10
+      MemorySize: 256
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref SectionsBucket
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref SectionsBucket
+      Events:
+        FetchSectionsApi:
+          Type: Api
+          Properties:
+            Path: /api/sections
+            Method: get
+
+  AttendanceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: LAMBDA_3/attendance-lambda/
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Timeout: 10
+      MemorySize: 256
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref SectionsBucket
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref SectionsBucket
+      Events:
+        AttendanceApi:
+          Type: Api
+          Properties:
+            Path: /api/attendance
+            Method: post
+
+  DeleteSectionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: LAMBDA_4/delete-section-lambda/
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Timeout: 10
+      MemorySize: 256
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref SectionsBucket
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref SectionsBucket
+      Events:
+        DeleteSectionApi:
+          Type: Api
+          Properties:
+            Path: /api/sections
+            Method: delete
 
 Outputs:
   ApiGatewayEndpoint:

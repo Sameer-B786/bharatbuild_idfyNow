@@ -1,5 +1,5 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID } = require('crypto');
 
 const s3Client = new S3Client({ region: process.env.AWS_REGION || 'us-east-1' });
 
@@ -25,7 +25,7 @@ exports.handler = async (event) => {
         }
 
         // Format: attendance/{sectionId}/{date-uuid}.json
-        const recordId = uuidv4();
+        const recordId = randomUUID();
         const objectKey = `attendance/${sectionId}/${date}_${recordId}.json`;
         
         const record = {
