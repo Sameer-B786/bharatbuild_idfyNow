@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, PlusSquare, LayoutGrid, ScanLine, Clock, User, LogOut, BarChart3 } from 'lucide-react';
+import { Home, PlusSquare, LayoutGrid, ScanLine, Clock, User, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function Sidebar({ userName = "Prof. Sharma" }) {
@@ -10,7 +10,6 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
-    { name: 'Analyse Attendance', href: '/dashboard/analyse', icon: BarChart3 },
     { name: 'Create Section', href: '/dashboard/sections/create', icon: PlusSquare },
     { name: 'Manage Sections', href: '/dashboard/sections', icon: LayoutGrid },
     { name: 'Take Attendance', href: '/dashboard/attendance', icon: ScanLine },
