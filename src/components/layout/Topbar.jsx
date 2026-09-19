@@ -1,25 +1,10 @@
 "use client";
 
-import { Search, Menu } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { Sidebar } from './Sidebar';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 export function Topbar({ userName = "Prof. Sharma" }) {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/dashboard/sections?q=${encodeURIComponent(searchQuery.trim())}`);
-    } else {
-      router.push('/dashboard/sections');
-    }
-  };
-
   return (
     <header className="flex h-16 items-center justify-between px-4 md:px-8 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
       <div className="flex items-center gap-4 flex-1">
@@ -34,17 +19,6 @@ export function Topbar({ userName = "Prof. Sharma" }) {
             </div>
           </SheetContent>
         </Sheet>
-        
-        <form onSubmit={handleSearch} className="flex-1 max-w-md relative hidden sm:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <Input 
-            type="search" 
-            placeholder="Search sections, students..." 
-            className="w-full pl-10 bg-white border-none rounded-full shadow-sm"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </form>
       </div>
       
       <div className="flex items-center gap-6">

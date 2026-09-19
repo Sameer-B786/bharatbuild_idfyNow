@@ -18,6 +18,33 @@ export default async function Dashboard() {
   const session = await getSession();
   const userName = session?.userInfo?.name || session?.userInfo?.email?.split('@')[0] || "User";
 
+  let totalSections = 0;
+  let totalStudents = 0;
+  let attendanceSessions = 0;
+
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
+    const res = await fetch(apiUrl, { cache: 'no-store' });
+    if (res.ok) {
+      const result = await res.json();
+      if (result.data) {
+        totalSections = result.data.length;
+        result.data.forEach(section => {
+          if (section.students) {
+            totalStudents += section.students.length;
+            if (section.students.length > 0) {
+              const studentKeys = Object.keys(section.students[0]);
+              const dateKeys = studentKeys.filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key));
+              attendanceSessions += dateKeys.length;
+            }
+          }
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch dashboard stats", error);
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-10">
       {/* Welcome Banner */}
@@ -44,9 +71,9 @@ export default async function Dashboard() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <StatCard title="Total Sections" value="5" trend="up" trendValue="+1 this month" icon={LayoutGrid} />
-        <StatCard title="Total Students" value="238" trend="up" trendValue="+12 this month" icon={Users} />
-        <StatCard title="Attendance Sessions" value="42" trend="up" trendValue="+8 this month" icon={Calendar} />
+        <StatCard title="Total Sections" value={totalSections.toString()} icon={LayoutGrid} />
+        <StatCard title="Total Students" value={totalStudents.toString()} icon={Users} />
+        <StatCard title="Attendance Sessions" value={attendanceSessions.toString()} icon={Calendar} />
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
