@@ -173,7 +173,18 @@ export default function AnalysePage() {
           </div>
 
           <div className="mt-8 pt-6 border-t flex justify-end">
-             <Button variant="outline" className="rounded-xl mr-3">Export Report</Button>
+             <Button variant="outline" className="rounded-xl mr-3" onClick={() => {
+               if (!results) return;
+               const blob = new Blob([JSON.stringify(results, null, 2)], { type: "application/json" });
+               const url = URL.createObjectURL(blob);
+               const a = document.createElement("a");
+               a.href = url;
+               a.download = `attendance-report-${new Date().toISOString().split("T")[0]}.json`;
+               a.click();
+               URL.revokeObjectURL(url);
+             }}>
+               Export Report
+             </Button>
              <Button className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-2">
                 Generate Detailed Dashboard
              </Button>
