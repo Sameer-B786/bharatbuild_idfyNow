@@ -24,9 +24,9 @@ import {
 
 import { Download } from "lucide-react";
 
-export function SectionCard({ id, title, subtitle, students, sem, status, studentsList }) {
-  const [isEditOpen, setIsEditOpen] = useState(false);
+export function SectionCard({ id, title, subtitle, students, sem, status, studentsList, onDelete }) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isConnectOpen, setIsConnectOpen] = useState(false);
   
   const handleExportExcel = async () => {
@@ -46,6 +46,30 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
     } catch (e) {
       console.error("Error exporting excel", e);
       alert("Failed to export Excel");
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
+      const response = await fetch(`${apiUrl}?sectionId=${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete section');
+      }
+      
+      setIsDeleteOpen(false);
+      if (onDelete) {
+        onDelete(id);
+      }
+    } catch (error) {
+      console.error('Error deleting section:', error);
+      alert('Failed to delete section');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -71,9 +95,6 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
               <DropdownMenuItem onClick={() => setIsConnectOpen(true)} className="text-blue-600 focus:bg-blue-50 focus:text-blue-700">
                 <svg className="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                 Connect to ERP / PowerBI
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
-                Edit Section
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="text-red-600 focus:bg-red-50 focus:text-red-700"
@@ -112,42 +133,6 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
         </Button>
       </div>
 
-      {/* Edit Section Dialog */}
-      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Section</DialogTitle>
-            <DialogDescription>
-              Update the details for this section. Click save when you're done.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="title">Section Title</Label>
-              <Input id="title" defaultValue={title} />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="subtitle">Subtitle / Branch</Label>
-              <Input id="subtitle" defaultValue={subtitle} />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="students">Students</Label>
-                <Input id="students" type="number" defaultValue={students} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="sem">Semester</Label>
-                <Input id="sem" type="number" defaultValue={sem} />
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditOpen(false)}>Cancel</Button>
-            <Button className="bg-orange-600 hover:bg-orange-700 text-white" onClick={() => setIsEditOpen(false)}>Save changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       {/* Delete Section Confirmation Dialog */}
       <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <DialogContent>
@@ -158,9 +143,9 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="mt-4">
-            <Button variant="outline" onClick={() => setIsDeleteOpen(false)}>Cancel</Button>
-            <Button variant="destructive" className="bg-red-600 hover:bg-red-700 text-white" onClick={() => setIsDeleteOpen(false)}>
-              Delete Section
+            <Button variant="outline" onClick={() => setIsDeleteOpen(false)} disabled={isDeleting}>Cancel</Button>
+            <Button variant="destructive" className="bg-red-600 hover:bg-red-700 text-white" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? "Deleting..." : "Delete Section"}
             </Button>
           </DialogFooter>
         </DialogContent>

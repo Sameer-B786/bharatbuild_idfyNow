@@ -61,6 +61,10 @@ function SectionsListContent() {
     s.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleDeleteSection = (deletedId) => {
+    setSections(prev => prev.filter(section => section.id !== deletedId));
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-10">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -95,7 +99,7 @@ function SectionsListContent() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredSections.map((section, index) => (
-            <SectionCard key={section.id || index} {...section} />
+            <SectionCard key={section.id || index} {...section} onDelete={handleDeleteSection} />
           ))}
           {filteredSections.length === 0 && (
             <div className="col-span-full py-12 text-center bg-white rounded-2xl border border-dashed">
