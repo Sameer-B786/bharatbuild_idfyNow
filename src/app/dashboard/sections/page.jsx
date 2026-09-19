@@ -1,16 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Plus, Search, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SectionCard } from "@/components/sections/SectionCard";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-export default function SectionsList() {
-  const [searchQuery, setSearchQuery] = useState("");
+function SectionsListContent() {
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [sections, setSections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    setSearchQuery(q || "");
+  }, [searchParams]);
 
   useEffect(() => {
     async function fetchSections() {
@@ -98,5 +105,13 @@ export default function SectionsList() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function SectionsList() {
+  return (
+    <Suspense fallback={<div className="py-12 flex justify-center items-center"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>}>
+      <SectionsListContent />
+    </Suspense>
   );
 }

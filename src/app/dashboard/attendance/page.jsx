@@ -325,16 +325,6 @@ export default function AttendancePage() {
                )}
             </div>
             
-            <form onSubmit={handleScan} className="flex gap-2">
-              <Input 
-                autoFocus
-                placeholder="Or type Student ID..." 
-                value={barcodeInput}
-                onChange={e => setBarcodeInput(e.target.value)}
-                className="bg-gray-50 border-gray-200"
-              />
-              <Button type="submit" variant="secondary" className="bg-gray-100 hover:bg-gray-200">Scan</Button>
-            </form>
           </div>
 
           {/* Recent Scans */}
