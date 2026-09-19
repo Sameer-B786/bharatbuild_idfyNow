@@ -24,7 +24,10 @@ import {
 
 import { Download } from "lucide-react";
 
+import { useRouter } from "next/navigation";
+
 export function SectionCard({ id, title, subtitle, students, sem, status, studentsList, onDelete }) {
+  const router = useRouter();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isConnectOpen, setIsConnectOpen] = useState(false);
@@ -62,6 +65,7 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
       }
       
       setIsDeleteOpen(false);
+      router.refresh();
       if (onDelete) {
         onDelete(id);
       }

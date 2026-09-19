@@ -46,6 +46,10 @@ export function DashboardSections() {
     fetchSections();
   }, []);
 
+  const handleDeleteSection = (deletedId) => {
+    setSections(prev => prev.filter(section => section.id !== deletedId));
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {isLoading ? (
@@ -55,7 +59,7 @@ export function DashboardSections() {
       ) : (
         <>
           {sections.map((section, index) => (
-            <SectionCard key={section.id || index} {...section} />
+            <SectionCard key={section.id || index} {...section} onDelete={handleDeleteSection} />
           ))}
         </>
       )}
