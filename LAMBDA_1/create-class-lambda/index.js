@@ -1,5 +1,5 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const { v4: uuidv4 } = require('uuid');
+
 
 const s3Client = new S3Client({ region: 'ap-south-1' });
 
@@ -23,7 +23,7 @@ exports.handler = async (event) => {
             };
         }
         
-        const sectionId = uuidv4();
+        const sectionId = Math.random().toString(36).substring(2, 15);
         const timestamp = new Date().toISOString();
         
         // Prepare the section data

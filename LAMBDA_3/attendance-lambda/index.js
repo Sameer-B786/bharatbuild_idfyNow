@@ -1,5 +1,5 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
-const { v4: uuidv4 } = require('uuid');
+
 
 const s3Client = new S3Client({ region: 'ap-south-1' });
 
@@ -28,7 +28,7 @@ exports.handler = async (event) => {
         if (!bucketName) throw new Error('BUCKET_NAME environment variable is not defined');
 
         // 1. Save the standalone attendance record
-        const recordId = uuidv4();
+        const recordId = Math.random().toString(36).substring(2, 15);
         const objectKey = `attendance/${userEmail}/${sectionId}/${date}_${recordId}.json`;
         
         const record = {
