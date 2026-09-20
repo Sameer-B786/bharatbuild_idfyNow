@@ -56,8 +56,10 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
     try {
       setIsDeleting(true);
       const apiUrl = '/api/proxy/sections';
-      const response = await fetch(`${apiUrl}?sectionId=${id}`, {
+      const response = await fetch(apiUrl, {
         method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sectionId: id }),
       });
       
       if (!response.ok) {
