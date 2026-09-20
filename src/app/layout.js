@@ -8,7 +8,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "IDfyNow | Smart Attendance System",
+  title: "IDfyNow",
   description: "Manage your classes, take attendance and keep track of your students - all in one place.",
 };
 
