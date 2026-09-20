@@ -1,12 +1,12 @@
-# idfyNow
+## idfyNow
 
-## 🌍 The Problem We Are Solving
+ ## The Problem I am Solving
 
 Across villages, towns, and every corner of India, faculties and teachers spend a significant portion of their valuable time managing manual administrative tasks, particularly attendance tracking. In tier-2 and tier-3 cities, the lack of accessible, user-friendly digital infrastructure often means educators have to rely on cumbersome manual data entry, which is both time-consuming and error-prone. 
 
 **idfyNow** is an automated helper designed specifically for faculties. Our mission is to reduce manual data handling and administrative burden by **80%**. By providing an intuitive, highly accessible platform, we empower educators to focus on what they do best—teaching—while the system seamlessly handles attendance, session management, and Excel integration behind the scenes.
 
-## 💻 Tech Stack
+##  Tech Stack
 
 - **Frontend**: Next.js, HTML/CSS, JavaScript
 - **Barcode Scanning**: HTML5 QR Code library for scanning student IDs
@@ -16,7 +16,7 @@ Across villages, towns, and every corner of India, faculties and teachers spend 
   - Automated Excel processing (dynamically handles date columns, initializes absentees to 0, and updates scanned students to 1).
 - **Integrations**: ERP integration for seamless institution-wide synchronization.
 
-## 🏗 Architecture
+## Architecture
 
 The system is built on a serverless, highly scalable architecture using AWS. It utilizes a microservices approach where the frontend communicates securely with the backend via API endpoints. 
 
@@ -24,7 +24,7 @@ Key architectural highlights:
 - **Session Management & Validation**: Implemented robust session handling and validation mechanisms using modern DBMS concepts.
 - **Efficient Data Processing**: The backend rapidly processes scanned student data and directly updates Excel sheets which are then synced with the college's ERP systems.
 
-## ☁️ How We Use AWS
+##  How I Used AWS
 
 AWS forms the backbone of our scalable and secure infrastructure:
 
@@ -32,11 +32,10 @@ AWS forms the backbone of our scalable and secure infrastructure:
 - **AWS Lambda**: Executes our business logic serverlessly. This means the system scales automatically with demand, handling high traffic during peak attendance hours without managing servers.
 - **Amazon API Gateway**: Acts as the secure "front door" for our Next.js frontend to communicate with the Lambda functions.
 - **Amazon S3**: Securely stores the generated and processed Excel files, making them easily retrievable for ERP integration and faculty downloads.
-- **Amazon DynamoDB**: Provides a fast, flexible NoSQL database for our data modeling, handling fast read/write operations essential for real-time attendance tracking.
+- **AWS Amplify**:the product is deployed live on amplify 
+##  Repository Structure
 
-## 📁 Repository Structure
+Within this documentation folder, you will find two specialized directories :
 
-Within this documentation folder, you will find two specialized directories (currently empty, to be populated later):
-
-- `/aws_screenshots`: Will contain visual evidence and configuration screenshots of the AWS services utilized in this project.
+- `/aws_screenshots`: Will contain visual evidence screenshots of the AWS services utilized in this project.
 - `/ppt_and_architecture`: Will contain the presentation slides (PPT) and detailed architectural diagrams mapping out the data flow and system design.
