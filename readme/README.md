@@ -4,7 +4,7 @@
 
 Across villages, towns, and every corner of India, faculties and teachers spend a significant portion of their valuable time managing manual administrative tasks, particularly attendance tracking. In tier-2 and tier-3 cities, the lack of accessible, user-friendly digital infrastructure often means educators have to rely on cumbersome manual data entry, which is both time-consuming and error-prone. 
 
-**idfyNow** is an automated helper designed specifically for faculties. Our mission is to reduce manual data handling and administrative burden by **80%**. By providing an intuitive, highly accessible platform, we empower educators to focus on what they do best—teaching—while the system seamlessly handles attendance, session management, and Excel integration behind the scenes.
+**idfyNow** is an automated helper designed specifically for faculties . Our mission is to reduce manual data handling and administrative burden by **80%** and able to handle multiple sections, hundreds of students from a single dashboard student. By providing an intuitive, highly accessible platform, we empower educators to focus on what they do best—teaching—while the system seamlessly handles attendance, session management, and Excel integration behind the scenes as well as provided option to integration the data to third party ERP portals or dynamic dashboards.
 
 ##  Tech Stack
 
