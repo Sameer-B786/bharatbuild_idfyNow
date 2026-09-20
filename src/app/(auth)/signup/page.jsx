@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { CheckCircle2, XCircle } from 'lucide-react';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -118,9 +119,44 @@ export default function SignUp() {
                 placeholder="••••••••"
               />
             </div>
+            
+            {password && (
+              <div className="mt-3 space-y-1.5 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                <p className="text-xs font-semibold text-gray-700 mb-2">Password must contain:</p>
+                {[
+                  { label: "At least 8 characters", met: password.length >= 8 },
+                  { label: "One uppercase letter", met: /[A-Z]/.test(password) },
+                  { label: "One lowercase letter", met: /[a-z]/.test(password) },
+                  { label: "One number", met: /[0-9]/.test(password) },
+                  { label: "One special character", met: /[^A-Za-z0-9]/.test(password) },
+                ].map((c, i) => (
+                  <div key={i} className="flex items-center text-xs">
+                    {c.met ? (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mr-2 shrink-0" />
+                    ) : (
+                      <XCircle className="w-3.5 h-3.5 text-gray-300 mr-2 shrink-0" />
+                    )}
+                    <span className={c.met ? "text-emerald-700" : "text-gray-500"}>{c.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-5" disabled={isLoading}>
+          <Button 
+            type="submit" 
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-5" 
+            disabled={
+              isLoading || 
+              (password.length > 0 && !(
+                password.length >= 8 && 
+                /[A-Z]/.test(password) && 
+                /[a-z]/.test(password) && 
+                /[0-9]/.test(password) && 
+                /[^A-Za-z0-9]/.test(password)
+              ))
+            }
+          >
             {isLoading ? "Signing up..." : "Sign up"}
           </Button>
 
