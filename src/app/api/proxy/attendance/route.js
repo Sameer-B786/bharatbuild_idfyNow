@@ -9,6 +9,7 @@ export async function POST(request) {
     }
 
     const body = await request.json();
+    body.userEmail = session.userInfo.email; // Guaranteed passing
     const apiUrl = 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/attendance'; // Fallback
 
     const baseApiUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.replace('/sections', '') : 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api';

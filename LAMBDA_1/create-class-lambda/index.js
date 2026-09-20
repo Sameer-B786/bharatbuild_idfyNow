@@ -41,7 +41,8 @@ exports.handler = async (event) => {
             throw new Error('BUCKET_NAME environment variable is not defined');
         }
 
-        const userEmail = (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
+        const userEmail = body?.userEmail ||
+                         (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
                          (event.queryStringParameters && event.queryStringParameters.userEmail) ||
                          'anonymous';
 

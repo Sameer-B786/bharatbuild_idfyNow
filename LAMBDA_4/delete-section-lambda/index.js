@@ -20,7 +20,8 @@ exports.handler = async (event) => {
             };
         }
 
-        const userEmail = (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
+        const userEmail = body?.userEmail || 
+                         (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
                          (event.queryStringParameters && event.queryStringParameters.userEmail) ||
                          'anonymous';
 

@@ -23,8 +23,10 @@ export default async function Dashboard() {
   let attendanceSessions = 0;
 
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
+    const baseApiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
     const email = session?.userInfo?.email || 'anonymous';
+    const apiUrl = `${baseApiUrl}?userEmail=${encodeURIComponent(email)}`;
+    
     const res = await fetch(apiUrl, { 
       cache: 'no-store',
       headers: { 'x-user-email': email }

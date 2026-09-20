@@ -12,6 +12,7 @@ export async function GET(request) {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
     const targetUrl = new URL(apiUrl);
     searchParams.forEach((value, key) => targetUrl.searchParams.append(key, value));
+    targetUrl.searchParams.append('userEmail', session.userInfo.email); // Guaranteed passing
 
     const response = await fetch(targetUrl, {
       method: 'GET',
@@ -37,6 +38,8 @@ export async function POST(request) {
     }
 
     const body = await request.json();
+    body.userEmail = session.userInfo.email; // Inject into body
+
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
 
     const response = await fetch(apiUrl, {
@@ -63,6 +66,8 @@ export async function DELETE(request) {
     }
 
     const body = await request.json();
+    body.userEmail = session.userInfo.email; // Inject into body
+
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
 
     const response = await fetch(apiUrl, {
