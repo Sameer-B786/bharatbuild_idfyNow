@@ -41,7 +41,11 @@ exports.handler = async (event) => {
             throw new Error('BUCKET_NAME environment variable is not defined');
         }
 
-        const objectKey = `sections/${sectionId}.json`;
+        const userEmail = (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
+                         (event.queryStringParameters && event.queryStringParameters.userEmail) ||
+                         'anonymous';
+
+        const objectKey = `sections/${userEmail}/${sectionId}.json`;
         
         // Save to S3
         const putParams = {

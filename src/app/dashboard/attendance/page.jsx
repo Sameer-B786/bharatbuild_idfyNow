@@ -27,11 +27,7 @@ export default function AttendancePage() {
   useEffect(() => {
     async function fetchSections() {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
-        if (!apiUrl || apiUrl.includes('YOUR_API_GATEWAY_URL_HERE')) {
-            setIsLoading(false);
-            return;
-        }
+        const apiUrl = '/api/proxy/sections';
 
         const response = await fetch(apiUrl, { cache: 'no-store' });
         if (!response.ok) throw new Error('Failed to fetch sections');
@@ -112,7 +108,7 @@ export default function AttendancePage() {
     setSessionState("SUBMITTING");
     
     try {
-      const apiUrl = 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/attendance';
+      const apiUrl = '/api/proxy/attendance';
       
       const payload = {
         sectionId: selectedSection,

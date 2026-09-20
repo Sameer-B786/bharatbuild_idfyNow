@@ -20,12 +20,16 @@ exports.handler = async (event) => {
             };
         }
 
+        const userEmail = (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
+                         (event.queryStringParameters && event.queryStringParameters.userEmail) ||
+                         'anonymous';
+
         const bucketName = process.env.BUCKET_NAME;
         if (!bucketName) {
             throw new Error('BUCKET_NAME environment variable is not defined');
         }
 
-        const objectKey = `sections/${sectionId}.json`;
+        const objectKey = `sections/${userEmail}/${sectionId}.json`;
         
         const deleteParams = {
             Bucket: bucketName,

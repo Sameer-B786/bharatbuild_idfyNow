@@ -10,24 +10,23 @@ import { useSearchParams } from "next/navigation";
 
 function SectionsListContent() {
   const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
+  const currentQ = searchParams.get("q") || "";
+  const [prevQ, setPrevQ] = useState(currentQ);
+  const [searchQuery, setSearchQuery] = useState(currentQ);
+
+  if (currentQ !== prevQ) {
+    setPrevQ(currentQ);
+    setSearchQuery(currentQ);
+  }
+
   const [sections, setSections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const q = searchParams.get("q");
-    setSearchQuery(q || "");
-  }, [searchParams]);
-
-  useEffect(() => {
     async function fetchSections() {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
-        if (!apiUrl || apiUrl.includes('YOUR_API_GATEWAY_URL_HERE')) {
-            console.log('No valid API URL found. Returning empty sections list.');
-            setIsLoading(false);
-            return;
-        }
+        const apiUrl = '/api/proxy/sections';
+
 
         const response = await fetch(apiUrl, { cache: 'no-store' });
         if (!response.ok) throw new Error('Failed to fetch sections');

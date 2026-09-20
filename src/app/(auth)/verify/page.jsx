@@ -34,7 +34,7 @@ function VerifyForm() {
       if (res.ok) {
         setSuccess(true);
         setTimeout(() => {
-          window.location.href = '/login';
+          router.push('/login');
         }, 2000);
       } else {
         const data = await res.json();

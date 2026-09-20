@@ -55,7 +55,7 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
+      const apiUrl = '/api/proxy/sections';
       const response = await fetch(`${apiUrl}?sectionId=${id}`, {
         method: 'DELETE',
       });
@@ -161,7 +161,7 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
           <DialogHeader>
             <DialogTitle>Connect Live Data</DialogTitle>
             <DialogDescription>
-              Use these live URLs to connect {title}'s attendance data to Google Sheets, PowerBI, or your College ERP. Data updates instantly when attendance is taken.
+              Use these live URLs to connect {title}&apos;s attendance data to Google Sheets, PowerBI, or your College ERP. Data updates instantly when attendance is taken.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -171,7 +171,7 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
                 <Input readOnly value={`https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections?sectionId=${id}&format=csv`} className="text-xs font-mono bg-gray-50" />
                 <Button variant="outline" onClick={() => navigator.clipboard.writeText(`https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections?sectionId=${id}&format=csv`)}>Copy</Button>
               </div>
-              <p className="text-xs text-gray-500 mt-1">Formula: <code className="bg-gray-100 px-1 rounded">=IMPORTDATA("...")</code></p>
+              <p className="text-xs text-gray-500 mt-1">Formula: <code className="bg-gray-100 px-1 rounded">=IMPORTDATA(&quot;...&quot;)</code></p>
             </div>
             
             <div className="grid gap-2 mt-2">

@@ -19,12 +19,16 @@ exports.handler = async (event) => {
             };
         }
 
+        const userEmail = (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
+                         (event.queryStringParameters && event.queryStringParameters.userEmail) ||
+                         'anonymous';
+
         const bucketName = process.env.BUCKET_NAME;
         if (!bucketName) throw new Error('BUCKET_NAME environment variable is not defined');
 
         // 1. Save the standalone attendance record
         const recordId = randomUUID();
-        const objectKey = `attendance/${sectionId}/${date}_${recordId}.json`;
+        const objectKey = `attendance/${userEmail}/${sectionId}/${date}_${recordId}.json`;
         
         const record = {
             id: recordId,
@@ -46,7 +50,7 @@ exports.handler = async (event) => {
             const { GetObjectCommand } = require('@aws-sdk/client-s3');
             const sectionRes = await s3Client.send(new GetObjectCommand({
                 Bucket: bucketName,
-                Key: `sections/${sectionId}.json`
+                Key: `sections/${userEmail}/${sectionId}.json`
             }));
             const sectionContent = await sectionRes.Body.transformToString();
             const sectionData = JSON.parse(sectionContent);
@@ -64,7 +68,7 @@ exports.handler = async (event) => {
                 // Save it back to S3
                 await s3Client.send(new PutObjectCommand({
                     Bucket: bucketName,
-                    Key: `sections/${sectionId}.json`,
+                    Key: `sections/${userEmail}/${sectionId}.json`,
                     Body: JSON.stringify(sectionData),
                     ContentType: 'application/json'
                 }));

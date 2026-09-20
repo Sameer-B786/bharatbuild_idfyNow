@@ -11,12 +11,16 @@ exports.handler = async (event) => {
             throw new Error('BUCKET_NAME environment variable is not defined');
         }
 
+        const userEmail = (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
+                         (event.queryStringParameters && event.queryStringParameters.userEmail) ||
+                         'anonymous';
+
         // Check if the user is requesting a specific section for integration (e.g. ERP, PowerBI)
         const queryParams = event.queryStringParameters || {};
         if (queryParams.sectionId) {
             const getResponse = await s3Client.send(new GetObjectCommand({
                 Bucket: bucketName,
-                Key: `sections/${queryParams.sectionId}.json`
+                Key: `sections/${userEmail}/${queryParams.sectionId}.json`
             }));
             const sectionData = JSON.parse(await getResponse.Body.transformToString());
             
@@ -51,25 +55,27 @@ exports.handler = async (event) => {
         // Default behavior: List all sections for the dashboard
         const listParams = {
             Bucket: bucketName,
-            Prefix: 'sections/'
+            Prefix: `sections/${userEmail}/`
         };
         const listResponse = await s3Client.send(new ListObjectsV2Command(listParams));
 
-        const sections = [];
+        let sections = [];
 
-        // If there are files, fetch each one's content
+        // If there are files, fetch each one's content concurrently for performance
         if (listResponse.Contents) {
-            for (const item of listResponse.Contents) {
-                if (item.Key.endsWith('.json')) {
-                    const getParams = {
-                        Bucket: bucketName,
-                        Key: item.Key
-                    };
-                    const getResponse = await s3Client.send(new GetObjectCommand(getParams));
-                    const fileContent = await getResponse.Body.transformToString();
-                    sections.push(JSON.parse(fileContent));
-                }
-            }
+            const jsonFiles = listResponse.Contents.filter(item => item.Key.endsWith('.json'));
+            
+            const fetchPromises = jsonFiles.map(async (item) => {
+                const getParams = {
+                    Bucket: bucketName,
+                    Key: item.Key
+                };
+                const getResponse = await s3Client.send(new GetObjectCommand(getParams));
+                const fileContent = await getResponse.Body.transformToString();
+                return JSON.parse(fileContent);
+            });
+            
+            sections = await Promise.all(fetchPromises);
         }
 
         return {

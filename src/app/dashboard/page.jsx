@@ -24,7 +24,11 @@ export default async function Dashboard() {
 
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://86m9zhdtc8.execute-api.ap-south-1.amazonaws.com/production/api/sections';
-    const res = await fetch(apiUrl, { cache: 'no-store' });
+    const email = session?.userInfo?.email || 'anonymous';
+    const res = await fetch(apiUrl, { 
+      cache: 'no-store',
+      headers: { 'x-user-email': email }
+    });
     if (res.ok) {
       const result = await res.json();
       if (result.data) {

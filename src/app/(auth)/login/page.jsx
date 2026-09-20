@@ -27,7 +27,8 @@ export default function Login() {
       });
       
       if (res.ok) {
-        window.location.href = '/dashboard';
+        router.push('/dashboard');
+        router.refresh();
       } else {
         const data = await res.json();
         setError(data.error || 'Invalid credentials');

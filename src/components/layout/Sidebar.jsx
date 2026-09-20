@@ -19,7 +19,8 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
-    window.location.href = '/login';
+    router.push('/login');
+    router.refresh();
   };
 
   return (
