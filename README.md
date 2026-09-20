@@ -1,5 +1,4 @@
 
-C:\Users\sameer\OneDrive\Attachments\Pictures\aws_screenshots
 ## idfyNow
 
  ## The Problem I am Solving
