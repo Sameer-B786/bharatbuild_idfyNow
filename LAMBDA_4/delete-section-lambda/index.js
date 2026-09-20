@@ -7,7 +7,7 @@ exports.handler = async (event) => {
         const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
         // In a true DELETE request, you might pass sectionId in queryStringParameters or pathParameters
         // But for simplicity with API gateway setups, we'll check body and query string
-        const sectionId = body?.sectionId || event.queryStringParameters?.sectionId;
+        const sectionId = (body && body.sectionId) || (event.queryStringParameters && event.queryStringParameters.sectionId);
 
         if (!sectionId) {
             return {
@@ -20,7 +20,7 @@ exports.handler = async (event) => {
             };
         }
 
-        const userEmail = body?.userEmail || 
+        const userEmail = (body && body.userEmail) || 
                          (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
                          (event.queryStringParameters && event.queryStringParameters.userEmail) ||
                          'anonymous';

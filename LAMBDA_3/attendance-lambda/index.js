@@ -19,7 +19,7 @@ exports.handler = async (event) => {
             };
         }
 
-        const userEmail = body?.userEmail || 
+        const userEmail = (body && body.userEmail) || 
                          (event.headers && (event.headers['x-user-email'] || event.headers['X-User-Email'])) || 
                          (event.queryStringParameters && event.queryStringParameters.userEmail) ||
                          'anonymous';
