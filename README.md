@@ -36,7 +36,7 @@ AWS forms the backbone of our scalable and secure infrastructure:
 - **AWS Amplify**:the product is deployed live on amplify 
 ##  Repository Structure
 
-Within this documentation folder, you will find two specialized directories :
+Within this repo, you will find:
 
-- `/aws_screenshots`: Will contain visual evidence screenshots of the AWS services utilized in this project.
-- `/ppt_and_architecture`: Will contain the presentation slides (PPT) and detailed architectural diagrams mapping out the data flow and system design.
+- `/aws_screenshots`: Will contain visual evidence screenshots of the AWS services utilized in this project and architectural diagram mapping out the data flow and system design
+
