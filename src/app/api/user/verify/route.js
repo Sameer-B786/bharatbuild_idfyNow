@@ -1,21 +1,21 @@
 import { NextResponse } from 'next/server';
-import { CognitoIdentityProviderClient, AdminUpdateUserAttributesCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoIdentityProviderClient, UpdateUserAttributesCommand } from '@aws-sdk/client-cognito-identity-provider';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSession } from '@/lib/session';
 import crypto from 'crypto';
 
-const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
 const REGION = process.env.COGNITO_REGION || 'ap-south-1';
-const BUCKET_NAME = process.env.S3_PROOFS_BUCKET || process.env.NEXT_PUBLIC_S3_BUCKET || 'bharatbuild-faculty-proofs';
+const BUCKET_NAME = process.env.S3_PROOFS_BUCKET || process.env.NEXT_PUBLIC_S3_BUCKET || 'verifybuck';
 
 export async function POST(request) {
   try {
     const session = await getSession();
-    if (!session || !session.userInfo || !session.userInfo.email) {
+    if (!session || !session.userInfo || !session.userInfo.email || !session.accessToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const email = session.userInfo.email;
+    const accessToken = session.accessToken;
     const formData = await request.formData();
     
     const name = formData.get('name');
@@ -82,22 +82,17 @@ export async function POST(request) {
     }
 
     // 3. Update Cognito Attributes
-    if (USER_POOL_ID) {
-      const cognitoClient = new CognitoIdentityProviderClient({ region: REGION });
-      await cognitoClient.send(new AdminUpdateUserAttributesCommand({
-        UserPoolId: USER_POOL_ID,
-        Username: email,
-        UserAttributes: [
-          { Name: 'custom:name_as_per_inst', Value: name },
-          { Name: 'custom:institute', Value: institute },
-          { Name: 'custom:expertise', Value: expertise },
-          { Name: 'custom:faculty_proof_url', Value: fileUrl },
-          { Name: 'custom:verification_status', Value: 'verified' },
-        ],
-      }));
-    } else {
-      console.warn("COGNITO_USER_POOL_ID not set. Skipping Cognito update.");
-    }
+    const cognitoClient = new CognitoIdentityProviderClient({ region: REGION });
+    await cognitoClient.send(new UpdateUserAttributesCommand({
+      AccessToken: accessToken,
+      UserAttributes: [
+        { Name: 'custom:name_as_per_inst', Value: name },
+        { Name: 'custom:institute', Value: institute },
+        { Name: 'custom:expertise', Value: expertise },
+        { Name: 'custom:faculty_proof_url', Value: fileUrl },
+        { Name: 'custom:verification_status', Value: 'verified' },
+      ],
+    }));
 
     return NextResponse.json({ success: true, message: 'You have been successfully verified!' });
 

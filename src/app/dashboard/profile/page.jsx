@@ -1,13 +1,13 @@
 import { getSession } from "@/lib/session";
-import { CognitoIdentityProviderClient, AdminGetUserCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { CognitoIdentityProviderClient, GetUserCommand } from '@aws-sdk/client-cognito-identity-provider';
 import { UserProfile } from "@/components/dashboard/UserProfile";
 
-const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
 const REGION = process.env.COGNITO_REGION || 'ap-south-1';
 
 export default async function ProfilePage() {
   const session = await getSession();
   const email = session?.userInfo?.email;
+  const accessToken = session?.accessToken;
 
   if (!email) {
     return <div>Not logged in</div>;
@@ -23,12 +23,11 @@ export default async function ProfilePage() {
     profilePicUrl: ''
   };
 
-  if (USER_POOL_ID) {
+  if (accessToken) {
     try {
       const client = new CognitoIdentityProviderClient({ region: REGION });
-      const command = new AdminGetUserCommand({
-        UserPoolId: USER_POOL_ID,
-        Username: email,
+      const command = new GetUserCommand({
+        AccessToken: accessToken,
       });
       const response = await client.send(command);
       
@@ -45,7 +44,7 @@ export default async function ProfilePage() {
       profileData.profilePicUrl = getAttr('picture');
 
     } catch (error) {
-      console.error("Error fetching user profile:", error);
+      console.error("Error fetching user profile:", error.message);
     }
   }
 
