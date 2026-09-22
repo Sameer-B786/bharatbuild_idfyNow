@@ -11,6 +11,7 @@ frontend:
         - echo "COGNITO_REGION=$COGNITO_REGION" >> .env.production
         - echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> .env.production
         - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
+        - echo "S3_PROOFS_BUCKET=$S3_PROOFS_BUCKET" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
