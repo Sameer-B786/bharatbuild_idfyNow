@@ -83,7 +83,6 @@ export default function SignUp() {
                 required 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
               />
             </div>
           </div>
@@ -99,7 +98,6 @@ export default function SignUp() {
                 required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
               />
             </div>
             <p className="text-xs text-gray-500 mt-2">Only .com and .in domains are supported.</p>
@@ -116,7 +114,6 @@ export default function SignUp() {
                 required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
               />
             </div>
             

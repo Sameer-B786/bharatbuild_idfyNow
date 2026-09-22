@@ -23,8 +23,20 @@ export default function CreateSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
 
+  const validateForm = () => {
+    if (!formData.className || !formData.sectionName || !formData.subject || !formData.semester || !formData.academicYear) {
+      alert("Please fill in all section details before proceeding.");
+      return false;
+    }
+    return true;
+  };
+
   const handleFileUpload = (e) => {
     e.preventDefault();
+    if (!validateForm()) {
+      if (e.target) e.target.value = null;
+      return;
+    }
     const uploadedFile = e.target.files?.[0] || e.dataTransfer?.files?.[0];
     if (uploadedFile) {
       setFile(uploadedFile);
@@ -63,6 +75,7 @@ export default function CreateSection() {
   };
 
   const handleCreate = async () => {
+    if (!validateForm()) return;
     setIsSubmitting(true);
     try {
       const payload = {
@@ -120,32 +133,32 @@ export default function CreateSection() {
         <div className="bg-white rounded-2xl border shadow-sm p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="space-y-2">
-              <Label htmlFor="className">Class Name</Label>
-              <Input id="className" placeholder="e.g. B.E CSE" 
+              <Label htmlFor="className">Class Name <span className="text-red-500">*</span></Label>
+              <Input id="className" required
                 value={formData.className} onChange={e => setFormData({...formData, className: e.target.value})} 
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sectionName">Section Name</Label>
-              <Input id="sectionName" placeholder="e.g. A" 
+              <Label htmlFor="sectionName">Section Name <span className="text-red-500">*</span></Label>
+              <Input id="sectionName" required 
                 value={formData.sectionName} onChange={e => setFormData({...formData, sectionName: e.target.value})}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="subject">Subject</Label>
-              <Input id="subject" placeholder="e.g. Mathematics" 
+              <Label htmlFor="subject">Subject <span className="text-red-500">*</span></Label>
+              <Input id="subject" required 
                 value={formData.subject} onChange={e => setFormData({...formData, subject: e.target.value})}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="semester">Semester</Label>
-              <Input id="semester" placeholder="e.g. 4" 
+              <Label htmlFor="semester">Semester <span className="text-red-500">*</span></Label>
+              <Input id="semester" required 
                 value={formData.semester} onChange={e => setFormData({...formData, semester: e.target.value})}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="academicYear">Academic Year</Label>
-              <Input id="academicYear" placeholder="e.g. 2025-26" 
+              <Label htmlFor="academicYear">Academic Year <span className="text-red-500">*</span></Label>
+              <Input id="academicYear" required 
                 value={formData.academicYear} onChange={e => setFormData({...formData, academicYear: e.target.value})}
               />
             </div>

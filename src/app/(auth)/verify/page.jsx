@@ -88,7 +88,6 @@ function VerifyForm() {
                 required 
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                placeholder="123456"
                 className="text-center tracking-widest text-lg"
                 maxLength={6}
               />
