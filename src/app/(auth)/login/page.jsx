@@ -48,7 +48,7 @@ export default function Login() {
           <p className="text-gray-500 mt-2">Sign in as faculty</p>
         </div>
         
-        <form className="space-y-6" onSubmit={handleLogin}>
+        <form autoComplete="off" className="space-y-6" onSubmit={handleLogin}>
           {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">{error}</div>}
           
           <div>

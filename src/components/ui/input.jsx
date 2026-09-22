@@ -16,6 +16,7 @@ function Input({
         className
       )}
       {...props}
+      autoComplete="off"
     />
   )
 }

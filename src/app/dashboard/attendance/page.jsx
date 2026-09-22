@@ -190,7 +190,7 @@ export default function AttendancePage() {
           </div>
         </div>
 
-        <form onSubmit={handleStartSession} className="bg-white rounded-2xl border shadow-sm p-8 space-y-6">
+        <form autoComplete="off" onSubmit={handleStartSession} className="bg-white rounded-2xl border shadow-sm p-8 space-y-6">
           <div className="space-y-3">
             <Label htmlFor="section">Select Section</Label>
             <select 

@@ -89,7 +89,7 @@ export function FacultyVerificationModal({ isOpen, onOpenChange, onComplete }) {
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 py-4">
+        <form autoComplete="off" onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
             <Label htmlFor="name">Name (as per institution) <span className="text-red-500">*</span></Label>
             <Input

@@ -69,7 +69,7 @@ export default function SignUp() {
           <p className="text-gray-500 mt-2">Create a new account</p>
         </div>
         
-        <form className="space-y-6" onSubmit={handleSignUp}>
+        <form autoComplete="off" className="space-y-6" onSubmit={handleSignUp}>
           {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">{error}</div>}
           
           <div>

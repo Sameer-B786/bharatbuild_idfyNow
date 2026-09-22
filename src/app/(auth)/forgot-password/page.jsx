@@ -39,7 +39,7 @@ export default function ForgotPassword() {
         </div>
         
         {!isSubmitted ? (
-          <form className="space-y-6" onSubmit={handleReset}>
+          <form autoComplete="off" className="space-y-6" onSubmit={handleReset}>
             {error && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg text-center">{error}</div>}
             
             <p className="text-sm text-gray-600 text-center">
