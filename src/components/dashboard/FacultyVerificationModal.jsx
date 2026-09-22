@@ -74,11 +74,10 @@ export function FacultyVerificationModal({ isOpen, onOpenChange, onComplete }) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent 
-        className="sm:max-w-[500px] [&>button]:hidden" 
-        onInteractOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
+        className="sm:max-w-[500px]" 
+        showCloseButton={false}
       >
         <DialogHeader>
           <div className="mx-auto w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4">
