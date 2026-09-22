@@ -10,6 +10,7 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
+    { name: 'Profile', href: '/dashboard/profile', icon: User },
     { name: 'Create Section', href: '/dashboard/sections/create', icon: PlusSquare },
     { name: 'Manage Sections', href: '/dashboard/sections', icon: LayoutGrid },
     { name: 'Take Attendance', href: '/dashboard/attendance', icon: ScanLine },
