@@ -1,0 +1,9 @@
+{
+  "name": "ocr-verification-lambda",
+  "version": "1.0.0",
+  "description": "OCR verification lambda using AWS Textract",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-textract": "^3.0.0"
+  }
+}

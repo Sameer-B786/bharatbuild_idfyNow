@@ -141,7 +141,7 @@ export function FacultyVerificationModal({ isOpen, onOpenChange, onComplete }) {
                       id="proofFile"
                       name="proofFile"
                       type="file"
-                      accept="application/pdf"
+                      accept="application/pdf,image/jpeg,image/png"
                       className="sr-only"
                       onChange={handleFileChange}
                       required
@@ -150,10 +150,13 @@ export function FacultyVerificationModal({ isOpen, onOpenChange, onComplete }) {
                   <p className="pl-1">or drag and drop</p>
                 </div>
                 <p className="text-xs text-gray-500">
-                  {formData.proofFile ? formData.proofFile.name : "PDF up to 5MB"}
+                  {formData.proofFile ? formData.proofFile.name : "PDF, PNG, or JPG (up to 5MB)"}
                 </p>
               </div>
             </div>
+            <p className="text-xs text-amber-600 mt-2 bg-amber-50 p-2 rounded-lg border border-amber-200">
+              ⚠️ <strong>Caution:</strong> Please ensure the document is high resolution and clearly readable. Our automated system will scan this document to verify your details instantly.
+            </p>
           </div>
 
           <DialogFooter className="pt-4">

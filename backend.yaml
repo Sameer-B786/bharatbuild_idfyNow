@@ -107,6 +107,31 @@ Resources:
             Path: /api/sections
             Method: delete
 
+  OcrVerificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: LAMBDA_5/ocr-verification-lambda/
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Timeout: 45
+      MemorySize: 512
+      Policies:
+        - S3ReadPolicy:
+            BucketName: "*"
+        - Statement:
+            - Effect: Allow
+              Action:
+                - textract:DetectDocumentText
+                - textract:StartDocumentTextDetection
+                - textract:GetDocumentTextDetection
+              Resource: "*"
+      Events:
+        VerifyOcrApi:
+          Type: Api
+          Properties:
+            Path: /api/verify-ocr
+            Method: post
+
 Outputs:
   ApiGatewayEndpoint:
     Description: "API Gateway endpoint URL for frontend NEXT_PUBLIC_API_URL"

@@ -43,7 +43,45 @@ export async function POST(request) {
 
     const fileUrl = `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${s3Key}`;
 
-    // 2. Update Cognito Attributes
+    // 2. Call OCR Lambda for automated verification
+    let isOcrVerified = false;
+    let ocrError = null;
+    try {
+      const baseApiUrl = process.env.NEXT_PUBLIC_API_URL;
+      if (baseApiUrl) {
+        const ocrUrl = baseApiUrl.replace('/sections', '/verify-ocr');
+        const ocrRes = await fetch(ocrUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bucketName: BUCKET_NAME,
+            objectKey: s3Key,
+            name: name,
+            institute: institute
+          })
+        });
+        
+        if (ocrRes.ok) {
+          const ocrData = await ocrRes.json();
+          isOcrVerified = ocrData.matchFound;
+        } else {
+          console.error("OCR Lambda returned error:", await ocrRes.text());
+        }
+      }
+    } catch (err) {
+      console.error("Failed to call OCR Lambda:", err);
+      ocrError = err.message;
+    }
+
+    if (!isOcrVerified) {
+      // If OCR fails to match, we can either reject them or set to pending.
+      // Let's set them to unverified and return an error to the user so they can retry.
+      return NextResponse.json({ 
+        error: 'Automated verification failed. We could not read your Name or Institute from the provided document. Please upload a clearer document.' 
+      }, { status: 400 });
+    }
+
+    // 3. Update Cognito Attributes
     if (USER_POOL_ID) {
       const cognitoClient = new CognitoIdentityProviderClient({ region: REGION });
       await cognitoClient.send(new AdminUpdateUserAttributesCommand({
@@ -54,14 +92,14 @@ export async function POST(request) {
           { Name: 'custom:institute', Value: institute },
           { Name: 'custom:expertise', Value: expertise },
           { Name: 'custom:faculty_proof_url', Value: fileUrl },
-          { Name: 'custom:verification_status', Value: 'pending' },
+          { Name: 'custom:verification_status', Value: 'verified' },
         ],
       }));
     } else {
       console.warn("COGNITO_USER_POOL_ID not set. Skipping Cognito update.");
     }
 
-    return NextResponse.json({ success: true, message: 'Verification details submitted successfully.' });
+    return NextResponse.json({ success: true, message: 'You have been successfully verified!' });
 
   } catch (error) {
     console.error('Error submitting verification:', error);
