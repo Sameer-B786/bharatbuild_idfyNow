@@ -10,41 +10,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 import { getSession } from "@/lib/session";
-import { CognitoIdentityProviderClient, AdminGetUserCommand } from '@aws-sdk/client-cognito-identity-provider';
 
 import { Greeting } from "@/components/dashboard/Greeting";
 import { DashboardSections } from "@/components/dashboard/DashboardSections";
-import { FacultyVerificationWrapper } from "@/components/dashboard/FacultyVerificationWrapper";
-
-const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
-const REGION = process.env.COGNITO_REGION || 'ap-south-1';
 
 export default async function Dashboard() {
   const session = await getSession();
   const userName = session?.userInfo?.name || session?.userInfo?.email?.split('@')[0] || "User";
-  const email = session?.userInfo?.email || 'anonymous';
-
-  let isVerified = true; // Default true so it doesn't block if Cognito is unconfigured
-  if (USER_POOL_ID && email !== 'anonymous') {
-    try {
-      const client = new CognitoIdentityProviderClient({ region: REGION });
-      const command = new AdminGetUserCommand({
-        UserPoolId: USER_POOL_ID,
-        Username: email,
-      });
-      const response = await client.send(command);
-      const attributes = response.UserAttributes || [];
-      const statusAttr = attributes.find(attr => attr.Name === 'custom:verification_status');
-      if (!statusAttr) {
-        isVerified = false;
-      } else {
-        isVerified = (statusAttr.Value === 'verified' || statusAttr.Value === 'pending');
-      }
-    } catch (error) {
-      console.error("Error fetching user verification status:", error);
-      // Optional: keep it true on error to avoid blocking active users during an AWS glitch
-    }
-  }
 
   let totalSections = 0;
   let totalStudents = 0;
@@ -81,8 +53,6 @@ export default async function Dashboard() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-10">
-      <FacultyVerificationWrapper isVerified={isVerified} />
-      
       {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-3xl p-8 flex justify-between items-center relative overflow-hidden border border-orange-100">
         <div className="relative z-10">
