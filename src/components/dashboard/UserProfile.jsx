@@ -89,6 +89,7 @@ export function UserProfile({ initialData }) {
           <div className="relative group">
             <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-100 flex items-center justify-center">
               {previewImage ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img src={previewImage} alt="Profile" className="w-full h-full object-cover" />
               ) : (
                 <span className="text-4xl text-gray-400 font-bold">
