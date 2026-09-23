@@ -28,7 +28,14 @@ export async function POST(request) {
     }
 
     // 1. Upload file to S3
-    const s3Client = new S3Client({ region: REGION });
+    const s3Config = { region: REGION };
+    if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+      s3Config.credentials = {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      };
+    }
+    const s3Client = new S3Client(s3Config);
     const fileBuffer = await proofFile.arrayBuffer();
     const fileExtension = proofFile.name.split('.').pop();
     const uniqueFileName = `${crypto.randomUUID()}.${fileExtension}`;
@@ -82,7 +89,14 @@ export async function POST(request) {
     }
 
     // 3. Update Cognito Attributes
-    const cognitoClient = new CognitoIdentityProviderClient({ region: REGION });
+    const cognitoConfig = { region: REGION };
+    if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+      cognitoConfig.credentials = {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      };
+    }
+    const cognitoClient = new CognitoIdentityProviderClient(cognitoConfig);
     await cognitoClient.send(new UpdateUserAttributesCommand({
       AccessToken: accessToken,
       UserAttributes: [
