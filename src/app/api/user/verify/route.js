@@ -29,10 +29,13 @@ export async function POST(request) {
 
     // 1. Upload file to S3
     const s3Config = { region: REGION };
-    if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+    const awsAccessKey = process.env.IDFY_AWS_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID;
+    const awsSecretKey = process.env.IDFY_AWS_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY;
+    
+    if (awsAccessKey && awsSecretKey) {
       s3Config.credentials = {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: awsAccessKey,
+        secretAccessKey: awsSecretKey,
       };
     }
     const s3Client = new S3Client(s3Config);
@@ -90,10 +93,10 @@ export async function POST(request) {
 
     // 3. Update Cognito Attributes
     const cognitoConfig = { region: REGION };
-    if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+    if (awsAccessKey && awsSecretKey) {
       cognitoConfig.credentials = {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: awsAccessKey,
+        secretAccessKey: awsSecretKey,
       };
     }
     const cognitoClient = new CognitoIdentityProviderClient(cognitoConfig);
