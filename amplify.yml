@@ -12,6 +12,8 @@ frontend:
         - echo "COGNITO_USER_POOL_ID=$COGNITO_USER_POOL_ID" >> .env.production
         - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env.production
         - echo "S3_PROOFS_BUCKET=$S3_PROOFS_BUCKET" >> .env.production
+        - echo "IDFY_AWS_ACCESS_KEY_ID=$IDFY_AWS_ACCESS_KEY_ID" >> .env.production
+        - echo "IDFY_AWS_SECRET_ACCESS_KEY=$IDFY_AWS_SECRET_ACCESS_KEY" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
