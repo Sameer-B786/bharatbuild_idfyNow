@@ -65,26 +65,26 @@ export default function BulkRenderEngine() {
   }
 
   return (
-    <div className="mt-6 p-4 border rounded bg-gray-50 flex flex-col items-center">
-      <h3 className="text-lg font-semibold mb-2">Ready to Generate</h3>
-      <p className="mb-4">{records.length} records loaded.</p>
+    <div className="p-6 border border-gray-100 rounded-xl bg-gray-50 flex flex-col items-center">
+      <h3 className="text-lg font-semibold text-gray-800 mb-2">Ready to Generate</h3>
+      <p className="mb-6 text-gray-600">{records.length} records successfully loaded and validated.</p>
       
       {isGenerating ? (
         <div className="w-full max-w-md">
-          <div className="h-4 w-full bg-gray-200 rounded overflow-hidden">
+          <div className="h-3 w-full bg-gray-200 rounded-full overflow-hidden mb-2">
             <div 
-              className="h-full bg-blue-600 transition-all duration-300" 
+              className="h-full bg-orange-500 transition-all duration-300" 
               style={{ width: `${progress}%` }} 
             />
           </div>
-          <p className="text-center mt-2">{progress}% completed</p>
+          <p className="text-center mt-2 text-sm font-medium text-gray-600">{progress}% completed</p>
         </div>
       ) : (
         <button 
           onClick={executeBatchGeneration}
-          className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          className="px-8 py-3 bg-orange-600 text-white font-bold rounded-full shadow hover:bg-orange-700 hover:shadow-lg transition-all"
         >
-          Start Batch Render (PDF)
+          Generate Output
         </button>
       )}
     </div>

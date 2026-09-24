@@ -21,28 +21,37 @@ export default function EventPassGeneratorPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
-      <div className="bg-white p-6 rounded shadow-sm border border-gray-200">
-        <h2 className="text-xl font-bold mb-4">Event Pass Generation</h2>
-        
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Event Pass Generation</h1>
+          <p className="text-gray-500">Upload attendee data and design template to generate passes.</p>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h2 className="text-lg font-bold mb-6 text-gray-800">1. Data & Template Setup</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ExcelDropzone schemaType={schemaType} />
           <TemplateJsonUploader />
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded shadow-sm border border-gray-200">
-        <h2 className="text-xl font-bold mb-4">Live Preview (First Record)</h2>
-        <div className="flex justify-center bg-gray-100 p-4 border rounded overflow-auto min-h-[400px]">
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h2 className="text-lg font-bold mb-4 text-gray-800">2. Live Preview</h2>
+        <div className="flex justify-center bg-gray-50 p-4 border border-gray-200 rounded-xl overflow-auto min-h-[400px]">
           {templateJson ? (
             <KonvaPreviewStage templateJson={templateJson} record={previewRecord} />
           ) : (
-            <div className="flex items-center justify-center text-gray-400 h-full w-full min-h-[300px]">
-               Upload a JSON template to see preview
+            <div className="flex flex-col items-center justify-center text-gray-400 h-full w-full min-h-[300px]">
+               <p>Upload a JSON template to see preview</p>
             </div>
           )}
         </div>
         
-        <BulkRenderEngine />
+        <div className="mt-8">
+          <h2 className="text-lg font-bold mb-4 text-gray-800">3. Final Output</h2>
+          <BulkRenderEngine />
+        </div>
       </div>
     </div>
   );

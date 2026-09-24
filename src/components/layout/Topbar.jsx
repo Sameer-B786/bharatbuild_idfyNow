@@ -21,7 +21,7 @@ export function Topbar({ userName = "Prof. Sharma" }) {
           </SheetContent>
         </Sheet>
         <Link 
-          href="/select-purpose"
+          href="/dashboard/idgen"
           className="flex items-center px-4 py-1.5 bg-orange-100 text-orange-700 hover:bg-orange-200 font-semibold rounded-full transition-colors text-sm border border-orange-200 shadow-sm"
         >
           IDGen
