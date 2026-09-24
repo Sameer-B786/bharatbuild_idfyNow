@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { BookOpen, Ticket } from 'lucide-react';
+import { ScanLine, Ticket } from 'lucide-react';
 
 export default function WorkspaceSelect() {
   return (
@@ -18,9 +18,9 @@ export default function WorkspaceSelect() {
             className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-indigo-500 hover:bg-indigo-50 hover:shadow-md rounded-2xl transition-all group"
           >
             <div className="h-16 w-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-               <BookOpen className="w-8 h-8" />
+               <ScanLine className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">IDfyNow</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">IDfy</h3>
             <p className="text-gray-500 text-sm">Handle sections and attendance as a faculty member.</p>
           </Link>
 

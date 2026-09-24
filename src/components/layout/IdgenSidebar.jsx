@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Home, Ticket, BadgeCheck, LogOut, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export function IdgenSidebar({ userName = "Organiser" }) {
+export function IdgenSidebar({ userName = "admin" }) {
   const pathname = usePathname();
 
   const navigation = [
@@ -22,8 +22,10 @@ export function IdgenSidebar({ userName = "Organiser" }) {
     router.refresh();
   };
 
+  if (pathname === '/idgen') return null;
+
   return (
-    <div className="hidden md:flex flex-col w-64 bg-white border-r min-h-screen">
+    <div className="hidden md:flex flex-col w-64 bg-white h-[calc(100vh-2rem)] rounded-2xl overflow-hidden shadow-sm border border-gray-100 flex-shrink-0">
       <div className="flex items-center h-16 px-6 font-bold text-xl text-purple-600 gap-2">
         <Ticket className="h-6 w-6" />
         IDGen
@@ -54,7 +56,7 @@ export function IdgenSidebar({ userName = "Organiser" }) {
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl mb-2">
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900 truncate capitalize">{userName}</p>
-            <p className="text-xs text-gray-500 truncate">Organiser</p>
+            <p className="text-xs text-gray-500 truncate">admin</p>
           </div>
         </div>
         <button onClick={handleLogout} className="flex w-full items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
