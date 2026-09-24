@@ -29,7 +29,14 @@ export default function IDGenWizardPage() {
           
           {step === 1 && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="mx-auto w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 text-indigo-600">
+              <button 
+                onClick={() => router.push('/workspace-select')} 
+                className="absolute top-8 left-8 flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4 mr-1" /> Back to Workspaces
+              </button>
+              
+              <div className="mx-auto w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 text-indigo-600 mt-8 md:mt-0">
                 <BadgeCheck className="w-8 h-8" />
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-3">What are you looking for?</h1>
