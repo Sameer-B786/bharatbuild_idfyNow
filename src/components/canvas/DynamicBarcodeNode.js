@@ -9,6 +9,7 @@ export default function DynamicBarcodeNode({ element, record }) {
   
   useEffect(() => {
     if (!value) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setImage(null);
       return;
     }
@@ -30,4 +31,3 @@ export default function DynamicBarcodeNode({ element, record }) {
     />
   );
 }
-

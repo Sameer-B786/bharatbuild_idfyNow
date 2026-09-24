@@ -8,6 +8,7 @@ export default function DynamicImageNode({ element, record }) {
 
   useEffect(() => {
     if (!src) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setImage(null);
         return;
     }
@@ -33,4 +34,3 @@ export default function DynamicImageNode({ element, record }) {
     />
   );
 }
-
