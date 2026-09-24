@@ -157,10 +157,10 @@ export default async function Dashboard() {
             </div>
           </div>
 
-          {/* Bottom IdilyNow Logo/Ad area */}
+          {/* Bottom IDfyNow Logo/Ad area */}
           <div className="bg-gradient-to-br from-white to-indigo-50 rounded-3xl p-6 border flex flex-col items-center justify-center text-center mt-8 shadow-sm">
             <div className="flex items-center gap-2 text-xl font-bold text-indigo-600 mb-2">
-               <ScanLine className="w-6 h-6" /> IdilyNow
+               <ScanLine className="w-6 h-6" /> IDfyNow
             </div>
             <p className="text-xs text-gray-400 font-medium tracking-widest uppercase">Fast • Secure • Reliable</p>
           </div>

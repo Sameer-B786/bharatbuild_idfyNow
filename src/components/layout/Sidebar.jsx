@@ -27,7 +27,7 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
     <div className="hidden md:flex flex-col w-64 bg-white border-r min-h-screen">
       <div className="flex items-center h-16 px-6 font-bold text-xl text-indigo-600 gap-2">
         <ScanLine className="h-6 w-6" />
-        IdilyNow
+        IDfyNow
       </div>
       
       <nav className="flex-1 px-4 py-4 space-y-1">

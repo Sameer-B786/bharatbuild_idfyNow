@@ -20,7 +20,7 @@ export default function WorkspaceSelect() {
             <div className="h-16 w-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                <BookOpen className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">IdilyNow</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">IDfyNow</h3>
             <p className="text-gray-500 text-sm">Handle sections and attendance as a faculty member.</p>
           </Link>
 

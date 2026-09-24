@@ -24,7 +24,7 @@ export function IdgenTopbar({ userName = "Organiser" }) {
           href="/dashboard"
           className="flex items-center px-4 py-1.5 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 font-semibold rounded-full transition-colors text-sm border border-indigo-200 shadow-sm"
         >
-          IdilyNow
+          IDfyNow
         </Link>
       </div>
       
