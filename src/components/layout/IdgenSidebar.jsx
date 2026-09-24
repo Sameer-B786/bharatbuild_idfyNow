@@ -51,9 +51,6 @@ export function IdgenSidebar({ userName = "Organiser" }) {
       </nav>
 
       <div className="p-4 mt-auto">
-        <Link href="/workspace-select" className="flex items-center text-sm text-gray-500 hover:text-gray-900 mb-4 px-2 transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Switch Workspace
-        </Link>
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl mb-2">
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900 truncate capitalize">{userName}</p>

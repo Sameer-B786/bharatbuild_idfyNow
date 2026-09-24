@@ -20,12 +20,6 @@ export function Topbar({ userName = "Prof. Sharma" }) {
             </div>
           </SheetContent>
         </Sheet>
-        <Link 
-          href="/workspace-select"
-          className="flex items-center px-4 py-1.5 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 font-semibold rounded-full transition-colors text-sm border border-indigo-200 shadow-sm"
-        >
-          Switch Workspace
-        </Link>
       </div>
       
       <div className="flex items-center gap-6">
