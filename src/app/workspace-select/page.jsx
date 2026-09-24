@@ -32,7 +32,7 @@ export default function WorkspaceSelect() {
                <Ticket className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">IDGen</h3>
-            <p className="text-gray-500 text-sm">Manage an event as an organiser and generate ID passes.</p>
+            <p className="text-gray-500 text-sm">Want to create ID cards for institution and entry pass for events.</p>
           </Link>
         </div>
       </div>
