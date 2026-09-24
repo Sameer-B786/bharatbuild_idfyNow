@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { Sidebar } from './Sidebar';
@@ -19,6 +20,12 @@ export function Topbar({ userName = "Prof. Sharma" }) {
             </div>
           </SheetContent>
         </Sheet>
+        <Link 
+          href="/select-purpose"
+          className="flex items-center px-4 py-1.5 bg-orange-100 text-orange-700 hover:bg-orange-200 font-semibold rounded-full transition-colors text-sm border border-orange-200 shadow-sm"
+        >
+          IDGen
+        </Link>
       </div>
       
       <div className="flex items-center gap-6">
