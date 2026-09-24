@@ -44,7 +44,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-sm space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">IDfyNow</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">IdilyNow</h2>
         </div>
         
         <form autoComplete="off" className="space-y-6" onSubmit={handleLogin}>
@@ -68,7 +68,7 @@ export default function Login() {
           <div>
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              <Link href="/forgot-password" className="text-sm font-medium text-orange-600 hover:text-orange-500">
+              <Link href="/forgot-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                 Forgot password?
               </Link>
             </div>
@@ -85,7 +85,7 @@ export default function Login() {
             </div>
           </div>
 
-          <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-5" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-5" disabled={isLoading}>
             {isLoading ? "Signing in..." : "Sign in"}
           </Button>
         </form>

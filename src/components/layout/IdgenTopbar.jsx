@@ -22,9 +22,9 @@ export function IdgenTopbar({ userName = "Organiser" }) {
         </Sheet>
         <Link 
           href="/dashboard"
-          className="flex items-center px-4 py-1.5 bg-orange-100 text-orange-700 hover:bg-orange-200 font-semibold rounded-full transition-colors text-sm border border-orange-200 shadow-sm"
+          className="flex items-center px-4 py-1.5 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 font-semibold rounded-full transition-colors text-sm border border-indigo-200 shadow-sm"
         >
-          IDfyNow
+          IdilyNow
         </Link>
       </div>
       

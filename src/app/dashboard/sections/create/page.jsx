@@ -171,7 +171,7 @@ export default function CreateSection() {
               onDrop={handleFileUpload}
               className="border-2 border-dashed border-gray-300 rounded-2xl p-10 flex flex-col items-center justify-center text-center hover:bg-gray-50 hover:border-orange-300 transition-colors cursor-pointer"
             >
-              <div className="p-4 bg-orange-50 text-orange-500 rounded-full mb-4">
+              <div className="p-4 bg-indigo-50 text-indigo-500 rounded-full mb-4">
                 <UploadCloud className="w-8 h-8" />
               </div>
               <h4 className="font-semibold text-gray-900 text-lg mb-1">Upload Excel File</h4>
@@ -181,7 +181,7 @@ export default function CreateSection() {
               <Button 
                 type="button" 
                 variant="outline" 
-                className="rounded-xl border-orange-200 text-orange-600 hover:bg-orange-50"
+                className="rounded-xl border-indigo-200 text-indigo-600 hover:bg-indigo-50"
                 onClick={(e) => {
                   e.preventDefault();
                   fileInputRef.current?.click();
@@ -200,7 +200,7 @@ export default function CreateSection() {
           </div>
 
           <div className="mt-8 flex justify-end">
-            <Button onClick={handleCreate} className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white px-8">
+            <Button onClick={handleCreate} className="rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white px-8">
               Save Section
             </Button>
           </div>
@@ -245,7 +245,7 @@ export default function CreateSection() {
 
           <div className="p-6 border-t bg-gray-50/50 flex justify-end gap-3">
             <Button variant="outline" onClick={() => setStep(1)} className="rounded-xl">Cancel</Button>
-            <Button onClick={handleCreate} disabled={isSubmitting} className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white">
+            <Button onClick={handleCreate} disabled={isSubmitting} className="rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white">
               {isSubmitting ? 'Saving...' : 'Save Section Data'}
             </Button>
           </div>
@@ -265,7 +265,7 @@ export default function CreateSection() {
             <Button variant="outline" asChild className="rounded-xl">
               <Link href="/dashboard">Return to Dashboard</Link>
             </Button>
-            <Button asChild className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white p-0">
+            <Button asChild className="rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white p-0">
               <Link href="/dashboard/attendance" className="flex flex-row items-center justify-center gap-2 w-full h-full px-4 py-2">
                 <span>Take Attendance Now</span>
                 <ArrowRight className="w-4 h-4 shrink-0" />

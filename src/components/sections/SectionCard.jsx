@@ -131,7 +131,7 @@ export function SectionCard({ id, title, subtitle, students, sem, status, studen
           </Badge>
         </div>
 
-        <Button asChild className="w-full mt-5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow-sm p-0">
+        <Button asChild className="w-full mt-5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-sm p-0">
           <Link href="/dashboard/attendance" className="flex flex-row items-center justify-center gap-2 w-full h-full px-4 py-2">
             <span>Take Attendance</span>
             <ArrowRight className="w-4 h-4 shrink-0" />

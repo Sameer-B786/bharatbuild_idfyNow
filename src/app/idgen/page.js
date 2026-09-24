@@ -29,7 +29,7 @@ export default function IDGenWizardPage() {
           
           {step === 1 && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="mx-auto w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 text-orange-600">
+              <div className="mx-auto w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 text-indigo-600">
                 <BadgeCheck className="w-8 h-8" />
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-3">What are you looking for?</h1>
@@ -38,7 +38,7 @@ export default function IDGenWizardPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <button 
                   onClick={() => handlePurposeSelect('id-card')}
-                  className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-orange-500 hover:bg-orange-50 hover:shadow-md rounded-2xl transition-all group"
+                  className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-indigo-500 hover:bg-indigo-50 hover:shadow-md rounded-2xl transition-all group"
                 >
                   <div className="group-hover:scale-110 transition-transform">
                     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-20 mb-6 drop-shadow-sm">

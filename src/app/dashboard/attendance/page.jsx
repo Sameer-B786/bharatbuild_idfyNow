@@ -169,7 +169,7 @@ export default function AttendancePage() {
                <p className="text-2xl font-bold text-rose-600">{absentCount}</p>
             </div>
           </div>
-          <Button asChild className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white w-full max-w-sm">
+          <Button asChild className="rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white w-full max-w-sm">
             <Link href="/dashboard">Return to Dashboard</Link>
           </Button>
         </div>
@@ -226,7 +226,7 @@ export default function AttendancePage() {
             />
           </div>
 
-          <Button type="submit" className="w-full rounded-xl bg-orange-500 hover:bg-orange-600 text-white py-6 text-lg mt-4 shadow-sm" disabled={!selectedSection}>
+          <Button type="submit" className="w-full rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white py-6 text-lg mt-4 shadow-sm" disabled={!selectedSection}>
             <ScanLine className="w-5 h-5 mr-2" /> Start Session
           </Button>
         </form>
@@ -256,7 +256,7 @@ export default function AttendancePage() {
             <span className="text-xs font-semibold uppercase tracking-wider mb-0.5">Absent</span>
             <span className="text-xl font-bold leading-none">{absentCount}</span>
           </div>
-          <div className="px-4 py-2 bg-orange-50 text-orange-700 rounded-xl border border-orange-100 flex flex-col items-center min-w-[90px]">
+          <div className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl border border-indigo-100 flex flex-col items-center min-w-[90px]">
              <span className="text-xs font-semibold uppercase tracking-wider mb-0.5">Total</span>
              <span className="text-xl font-bold leading-none">{percentage}%</span>
           </div>
@@ -269,7 +269,7 @@ export default function AttendancePage() {
           <Button 
             onClick={handleSubmit} 
             disabled={sessionState === "SUBMITTING"}
-            className="rounded-xl bg-orange-500 hover:bg-orange-600 text-white px-6 shadow-sm"
+            className="rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white px-6 shadow-sm"
           >
             {sessionState === "SUBMITTING" ? "Submitting..." : "Submit Attendance"}
           </Button>
@@ -304,16 +304,16 @@ export default function AttendancePage() {
                   </div>
                ) : (
                   <>
-                     <div className="absolute inset-0 border-2 border-orange-500/50 m-8 rounded-lg">
-                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-orange-500" />
-                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-orange-500" />
-                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-orange-500" />
-                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-orange-500" />
-                        <div className="w-full h-0.5 bg-orange-500/80 absolute top-1/2 -translate-y-1/2 shadow-[0_0_8px_2px_rgba(249,115,22,0.5)] animate-pulse" />
+                     <div className="absolute inset-0 border-2 border-indigo-500/50 m-8 rounded-lg">
+                        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-indigo-500" />
+                        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-indigo-500" />
+                        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-indigo-500" />
+                        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-indigo-500" />
+                        <div className="w-full h-0.5 bg-indigo-500/80 absolute top-1/2 -translate-y-1/2 shadow-[0_0_8px_2px_rgba(249,115,22,0.5)] animate-pulse" />
                      </div>
                      <Button 
                        onClick={() => setIsCameraActive(true)}
-                       className="z-10 bg-orange-500 hover:bg-orange-600 text-white"
+                       className="z-10 bg-indigo-500 hover:bg-indigo-600 text-white"
                      >
                        Turn On Camera
                      </Button>
@@ -364,7 +364,7 @@ export default function AttendancePage() {
         <div className="lg:col-span-2 bg-white rounded-2xl border shadow-sm flex flex-col max-h-[calc(100vh-140px)]">
           <div className="p-4 border-b flex justify-between items-center gap-4">
             <h3 className="font-bold text-gray-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-orange-500" />
+              <Users className="w-5 h-5 text-indigo-500" />
               Class Roster <span className="text-gray-400 font-normal text-sm ml-1">({students.length})</span>
             </h3>
             <div className="relative w-64">

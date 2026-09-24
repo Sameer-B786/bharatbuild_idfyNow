@@ -73,7 +73,7 @@ export default function BulkRenderEngine() {
         <div className="w-full max-w-md">
           <div className="h-3 w-full bg-gray-200 rounded-full overflow-hidden mb-2">
             <div 
-              className="h-full bg-orange-500 transition-all duration-300" 
+              className="h-full bg-indigo-500 transition-all duration-300" 
               style={{ width: `${progress}%` }} 
             />
           </div>
@@ -82,7 +82,7 @@ export default function BulkRenderEngine() {
       ) : (
         <button 
           onClick={executeBatchGeneration}
-          className="px-8 py-3 bg-orange-600 text-white font-bold rounded-full shadow hover:bg-orange-700 hover:shadow-lg transition-all"
+          className="px-8 py-3 bg-indigo-600 text-white font-bold rounded-full shadow hover:bg-indigo-700 hover:shadow-lg transition-all"
         >
           Generate Output
         </button>

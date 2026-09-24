@@ -72,7 +72,7 @@ export function FacultyVerificationModal({ isOpen, onOpenChange, onComplete }) {
         showCloseButton={false}
       >
         <DialogHeader>
-          <div className="mx-auto w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-4">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <DialogTitle className="text-center text-2xl">Faculty Verification</DialogTitle>
@@ -118,7 +118,7 @@ export function FacultyVerificationModal({ isOpen, onOpenChange, onComplete }) {
           <DialogFooter className="pt-4">
             <Button 
               type="submit" 
-              className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Submitting..." : "Verify Details"}

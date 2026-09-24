@@ -8,7 +8,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "IDfyNow",
+  title: "IdilyNow",
   description: "Manage your classes, take attendance and keep track of your students - all in one place.",
 };
 

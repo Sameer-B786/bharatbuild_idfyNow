@@ -25,9 +25,9 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
 
   return (
     <div className="hidden md:flex flex-col w-64 bg-white border-r min-h-screen">
-      <div className="flex items-center h-16 px-6 font-bold text-xl text-orange-600 gap-2">
+      <div className="flex items-center h-16 px-6 font-bold text-xl text-indigo-600 gap-2">
         <ScanLine className="h-6 w-6" />
-        IDfyNow
+        IdilyNow
       </div>
       
       <nav className="flex-1 px-4 py-4 space-y-1">
@@ -40,11 +40,11 @@ export function Sidebar({ userName = "Prof. Sharma" }) {
               className={cn(
                 'flex items-center px-4 py-3 text-sm font-medium rounded-full transition-colors',
                 isActive
-                  ? 'bg-orange-50 text-orange-600'
+                  ? 'bg-indigo-50 text-indigo-600'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               )}
             >
-              <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-orange-600" : "text-gray-400")} />
+              <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-indigo-600" : "text-gray-400")} />
               {item.name}
             </Link>
           );

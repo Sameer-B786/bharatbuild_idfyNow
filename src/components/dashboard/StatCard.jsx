@@ -7,7 +7,7 @@ export function StatCard({ title, value, trend, trendValue, icon: Icon }) {
   return (
     <div className="bg-white rounded-2xl p-6 border shadow-sm flex flex-col items-center text-center justify-between hover:shadow-md transition-shadow">
       <div className="flex justify-center w-full">
-        <div className="p-2 bg-orange-50 text-orange-500 rounded-xl">
+        <div className="p-2 bg-indigo-50 text-indigo-500 rounded-xl">
           <Icon className="w-6 h-6" />
         </div>
       </div>

@@ -34,7 +34,7 @@ export default function ForgotPassword() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">IDfyNow</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">IdilyNow</h2>
           <p className="text-gray-500 mt-2">Reset your password</p>
         </div>
         
@@ -61,13 +61,13 @@ export default function ForgotPassword() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white rounded-xl py-5" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-5" disabled={isLoading}>
               {isLoading ? "Sending link..." : "Send reset link"}
             </Button>
 
             <div className="text-center text-sm text-gray-500 mt-4">
               Remember your password?{' '}
-              <Link href="/login" className="font-medium text-orange-600 hover:text-orange-500">
+              <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Back to login
               </Link>
             </div>
@@ -82,7 +82,7 @@ export default function ForgotPassword() {
             </div>
             
             <div className="text-center text-sm text-gray-500 mt-4">
-              <Link href="/login" className="font-medium text-orange-600 hover:text-orange-500">
+              <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Return to login
               </Link>
             </div>

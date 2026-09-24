@@ -1,4 +1,4 @@
-﻿import { SignJWT, jwtVerify } from 'jose';
+import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
 const secretKey = process.env.JWT_SECRET || 'fallback-secret-do-not-use-in-production';

@@ -81,7 +81,7 @@ function SectionsListContent() {
               onChange={e => setSearchQuery(e.target.value)}
             />
           </div>
-          <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow-sm shrink-0 p-0">
+          <Button asChild className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl shadow-sm shrink-0 p-0">
             <Link href="/dashboard/sections/create" className="flex flex-row items-center justify-center gap-2 px-4 py-2 w-full h-full">
               <Plus className="w-4 h-4 shrink-0" />
               <span>New Section</span>
@@ -92,7 +92,7 @@ function SectionsListContent() {
 
       {isLoading ? (
         <div className="py-12 flex justify-center items-center">
-          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -112,7 +112,7 @@ function SectionsListContent() {
 
 export default function SectionsList() {
   return (
-    <Suspense fallback={<div className="py-12 flex justify-center items-center"><Loader2 className="h-8 w-8 animate-spin text-orange-500" /></div>}>
+    <Suspense fallback={<div className="py-12 flex justify-center items-center"><Loader2 className="h-8 w-8 animate-spin text-indigo-500" /></div>}>
       <SectionsListContent />
     </Suspense>
   );
