@@ -40,8 +40,15 @@ export default function IDGenWizardPage() {
                   onClick={() => handlePurposeSelect('id-card')}
                   className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-orange-500 hover:bg-orange-50 hover:shadow-md rounded-2xl transition-all group"
                 >
-                  <div className="h-16 w-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                     <BadgeCheck className="w-8 h-8" />
+                  <div className="group-hover:scale-110 transition-transform">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-20 mb-6 drop-shadow-sm">
+                      <rect x="25" y="15" width="50" height="70" rx="6" fill="#FFF7ED" stroke="#EA580C" strokeWidth="4" />
+                      <rect x="40" y="5" width="20" height="10" rx="3" fill="#EA580C" />
+                      <circle cx="50" cy="40" r="12" fill="#FFEDD5" stroke="#EA580C" strokeWidth="4" />
+                      <path d="M34 65C34 56 42 53 50 53C58 53 66 56 66 65" stroke="#EA580C" strokeWidth="4" strokeLinecap="round" />
+                      <rect x="35" y="72" width="30" height="4" rx="2" fill="#FDBA74" />
+                      <rect x="35" y="80" width="20" height="4" rx="2" fill="#FDBA74" />
+                    </svg>
                   </div>
                   <h2 className="text-xl font-bold text-gray-900 mb-2">Educational ID Cards</h2>
                   <p className="text-sm text-gray-500 leading-relaxed">For students, faculty, and staff members.</p>
@@ -51,8 +58,15 @@ export default function IDGenWizardPage() {
                   onClick={() => handlePurposeSelect('event-pass')}
                   className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-purple-500 hover:bg-purple-50 hover:shadow-md rounded-2xl transition-all group"
                 >
-                  <div className="h-16 w-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                     <Ticket className="w-8 h-8" />
+                  <div className="group-hover:scale-110 transition-transform">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-20 mb-6 drop-shadow-sm">
+                      <rect x="15" y="25" width="70" height="50" rx="6" fill="#F3E8FF" stroke="#9333EA" strokeWidth="4" />
+                      <circle cx="15" cy="50" r="8" fill="white" stroke="#9333EA" strokeWidth="4" />
+                      <circle cx="85" cy="50" r="8" fill="white" stroke="#9333EA" strokeWidth="4" />
+                      <path d="M35 25v50M65 25v50" stroke="#9333EA" strokeWidth="4" strokeDasharray="6 6" />
+                      <rect x="42" y="45" width="16" height="10" rx="2" fill="#D8B4FE" />
+                      <path d="M42 35h16" stroke="#D8B4FE" strokeWidth="4" strokeLinecap="round" />
+                    </svg>
                   </div>
                   <h2 className="text-xl font-bold text-gray-900 mb-2">Event Passes</h2>
                   <p className="text-sm text-gray-500 leading-relaxed">For event attendees, hosts, and volunteers.</p>

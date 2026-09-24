@@ -6,6 +6,9 @@ import TemplateJsonUploader from '@/components/upload/TemplateJsonUploader';
 import BulkRenderEngine from '@/components/rendering/BulkRenderEngine';
 import { useGeneratorStore } from '@/store/useGeneratorStore';
 
+import { useRouter } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
+
 // SSR Guard for Konva
 const KonvaPreviewStage = dynamic(
   () => import('@/components/canvas/KonvaPreviewStage'),
@@ -13,6 +16,7 @@ const KonvaPreviewStage = dynamic(
 );
 
 export default function EventPassGeneratorPage() {
+  const router = useRouter();
   const schemaType = 'eventpass';
   const templateJson = useGeneratorStore((state) => state.templateJson);
   const records = useGeneratorStore((state) => state.records);
@@ -21,7 +25,14 @@ export default function EventPassGeneratorPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center gap-4 mb-4">
+        <button 
+          onClick={() => router.back()} 
+          className="p-2 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors shadow-sm text-gray-600"
+          title="Go Back"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Event Pass Generation</h1>
           <p className="text-gray-500">Upload attendee data and design template to generate passes.</p>

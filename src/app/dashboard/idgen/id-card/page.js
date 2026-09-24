@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect, Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
 import ExcelDropzone from '@/components/upload/ExcelDropzone';
 import TemplateJsonUploader from '@/components/upload/TemplateJsonUploader';
 import BulkRenderEngine from '@/components/rendering/BulkRenderEngine';
@@ -36,9 +37,18 @@ function IdCardGeneratorContent() {
     'faculty': 'Faculty & Staff ID Cards'
   };
 
+  const router = useRouter();
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center gap-4 mb-4">
+        <button 
+          onClick={() => router.back()} 
+          className="p-2 bg-white border border-gray-200 rounded-full hover:bg-gray-50 transition-colors shadow-sm text-gray-600"
+          title="Go Back"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{schemaTitles[schemaType] || 'Educational ID Cards'}</h1>
           <p className="text-gray-500">Upload your data and template to generate badges.</p>
