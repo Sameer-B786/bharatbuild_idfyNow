@@ -25,7 +25,7 @@ export function IdgenSidebar({ userName = "Organiser" }) {
   return (
     <div className="hidden md:flex flex-col w-64 bg-white border-r min-h-screen">
       <div className="flex items-center h-16 px-6 font-bold text-xl text-purple-600 gap-2">
-        <img src="https://share.google/jOVeMwu4eRBF9zfhA" alt="IDfyNow Logo" className="h-8 w-8 object-contain" />
+        <Ticket className="h-6 w-6" />
         IDGen
       </div>
       

@@ -17,8 +17,8 @@ export default function WorkspaceSelect() {
             href="/dashboard"
             className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-orange-500 hover:bg-orange-50 hover:shadow-md rounded-2xl transition-all group"
           >
-            <div className="h-16 w-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-               <img src="https://share.google/jOVeMwu4eRBF9zfhA" alt="IDfyNow Logo" className="w-14 h-14 object-contain" />
+            <div className="h-16 w-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+               <BookOpen className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">IDfyNow</h3>
             <p className="text-gray-500 text-sm">Handle sections and attendance as a faculty member.</p>
