@@ -34,7 +34,7 @@ export default async function DashboardLayout({ children }) {
     <div className="flex min-h-screen bg-[#FDFDFD]">
       <Sidebar userName={userName} />
       <div className="flex-1 flex flex-col">
-        <Topbar userName={userName} />
+        {/* <Topbar userName={userName} /> */}
         <main className="flex-1 p-8 overflow-auto">
           {!isVerified && <FacultyVerificationWrapper isVerified={isVerified} />}
           {children}

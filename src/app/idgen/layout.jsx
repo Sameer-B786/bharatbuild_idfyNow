@@ -11,7 +11,7 @@ export default async function IdgenLayout({ children }) {
       <IdgenSidebar userName={userName} />
       <div className="flex-1 flex flex-col gap-4 min-w-0">
         <IdgenTopbar userName={userName} />
-        <main className="flex-1 p-8 overflow-auto rounded-2xl bg-white shadow-sm border border-gray-100">
+        <main className="flex-1 p-8 overflow-auto rounded-2xl bg-white shadow-sm border border-gray-100 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {children}
         </main>
       </div>
