@@ -12,14 +12,14 @@ export default function IDGenWizardPage() {
   const handlePurposeSelect = (selectedPurpose) => {
     setPurpose(selectedPurpose);
     if (selectedPurpose === 'event-pass') {
-      router.push('/dashboard/idgen/event-pass');
+      router.push('/idgen/event-pass');
     } else {
       setStep(2);
     }
   };
 
   const handleAudienceSelect = (selectedAudience) => {
-    router.push(`/dashboard/idgen/id-card?schema=${selectedAudience}`);
+    router.push(`/idgen/id-card?schema=${selectedAudience}`);
   };
 
   return (

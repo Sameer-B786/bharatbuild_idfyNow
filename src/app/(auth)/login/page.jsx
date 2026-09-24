@@ -27,7 +27,7 @@ export default function Login() {
       });
       
       if (res.ok) {
-        router.push('/dashboard');
+        router.push('/workspace-select');
         router.refresh();
       } else {
         const data = await res.json();
