@@ -15,7 +15,7 @@ export default function WorkspaceSelect() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <Link 
             href="/dashboard"
-            className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-indigo-500 hover:bg-indigo-50 hover:shadow-md rounded-2xl transition-all group"
+            className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-blue-600 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] rounded-2xl transition-all duration-300 group"
           >
             <div className="h-16 w-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                <ScanLine className="w-8 h-8" />
@@ -26,7 +26,7 @@ export default function WorkspaceSelect() {
 
           <Link 
             href="/idgen"
-            className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-purple-500 hover:bg-purple-50 hover:shadow-md rounded-2xl transition-all group"
+            className="flex flex-col items-center p-8 bg-white border-2 border-gray-100 hover:border-blue-600 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] rounded-2xl transition-all duration-300 group"
           >
             <div className="h-16 w-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                <Ticket className="w-8 h-8" />
