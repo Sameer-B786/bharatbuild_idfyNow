@@ -11,12 +11,6 @@ export default function AuthLayout({ children }) {
         <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900">
           Sign in to your account
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{' '}
-          <a href="#" className="font-medium text-orange-600 hover:text-orange-500">
-            register for a new faculty account
-          </a>
-        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
